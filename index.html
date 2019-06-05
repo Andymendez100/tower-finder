@@ -6,19 +6,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tower-Finder</title>
-    <link rel = "stylesheet" href = "assets/css/style.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
 
 </head>
 
 <body>
-<div id = "map"></div>
+    <!-- Jumbotron (background img & logo) -->
+    <div class="jumbotron-fluid"></div>
 
+    <!-- Input form for address-->
+    <div class="form-group">
+        <label for="addressInput">Address: </label>
+        <input type="text" class="form-control" id="addressInput" placeholder="Ex. 1234 Normal st.">
+    </div>
+    <!-- Submit Button-->
+    <div class="button">
+        <input id="submitAddress" type="submit" value="Submit">
+    </div>
+    <!--  discription of app  -->
+    <div id ="appDiscription"></div>
+    <!-- How to use application-->
+    <div id="appDirections"></div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HKLqN1MC49K-vtpVxamkZOfSO6-Ocfs
-&callback=initMap" async defer>
+    <!-- ------------------------------------------------------------------- -->
+
+    <!-- EVERYTHING AFTER THIS LINE IS REDIRECTED -->
+
+    <!-- Google maps-->
+    <div id="map"></div>
+
+    <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Tower Owner</th>
+                <th scope="col">Latitude & Longitude</th>
+                <th scope="col">City</th>
+                <th scope="col">State</th>
+                <th scope="col">Tower height</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HKLqN1MC49K-vtpVxamkZOfSO6-Ocfs
+&callback=initMap">
 </script>
-<script src ="assets/javascript/app.js"></script>
+    <script src="assets/javascript/app.js"></script>
 </body>
 
 </html>
