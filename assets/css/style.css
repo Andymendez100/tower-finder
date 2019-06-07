@@ -24,18 +24,18 @@ html, body {
 .btn-large {
   overflow: hidden;
 }
-.btn-large:hover:before {
+.btn-large:hover::before {
   opacity:1;
 }
 .btn-large:before {
-    content: '';
-    opacity: 0;
-    background-color: rgba(68, 138, 255, 0.6);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    transition: opacity .2s;
-    z-index: -1;
+  content: '';
+  opacity: 0;
+  background-color: rgba(68, 138, 255, 0.6);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transition: opacity .2s;
+  z-index: -1;
 }
