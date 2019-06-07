@@ -1,48 +1,81 @@
-
+// Initialize firebase
 var config = {
-  apiKey: "AIzaSyAMPjG7vghDD6o2-pwFbiQVAu1gK4T1guQ",
-  authDomain: "tower-finder-project1.firebaseapp.com",
-  databaseURL: "https://tower-finder-project1.firebaseio.com/",
-  storageBucket: "gs://tower-finder-project1.appspot.com/"
+  apiKey: " AIzaSyDOUxD0QFTDg2BKTNPA10x1-fhhidwDD-I",
+  authDomain: "tower-finder-7c3ef.firebaseapp.com",
+  databaseURL: "https://tower-finder-7c3ef.firebaseio.com/",
+  storageBucket: "gs://tower-finder-7c3ef.appspot.com/"
 };
 
 firebase.initializeApp(config);
 
+// Variables
+// Create a variable to reference the database.
 var database = firebase.database();
+var towerCoord = { lat: 33.9745, lng: -117.3374 };
+var userCity = "LA";
+var fbCity;
+var iconBase = 'assets/images/tower-icon.png';
+
+// Creates cell towers in maps in user specified citites
+function cityLoc() {
+  // Goes into our database
+  database.ref().on("value", function (data) {
+    // Creates var tower for arrays in database
+    for (tower in data.val()) {
+      // Saves city loc in var
+      fbCity = data.val()[tower].LOCCITY;
+
+      // If user city equals the cell tower city
+      if (fbCity === userCity) {
+        // Get coordinates for new cell tower
+        towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
+
+        // Creates new google map marker
+        var marker = new google.maps.Marker({
+          position: towerCoord,
+          icon: iconBase,
+          map: map
+        });
+
+        // Saving cell tower data into variables
+        var tOwner = data.val()[tower].LICENSEE;
+        var coords = data.val()[tower].LAT_DMS + ", " + data.val()[tower].LON_DMS;
+        var city = data.val()[tower].LOCCITY;
+        var state = data.val()[tower].LOCSTATE;
+        var height = data.val()[tower].SUPSTRUC;
+
+        // Create a new row
+        var newRow = $("<tr>").append(
+          $("<td>").text(tOwner),
+          $("<td>").text(coords),
+          $("<td>").text(city),
+          $("<td>").text(state),
+          $("<td>").text(height)
+        );
+
+        // Append the row to table
+        $("#tower-table > tbody").append(newRow);
+      }
+    }
+  });
+}
 
 
-
-//Google map api and markers
-
-var initCoord = { lat: 33.9745, lng: -117.3374 };
 
 var map;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 33, lng: -117 },
     zoom: 5
-    
   });
 
-  //console.log("working");
-  database.ref().once('value', function(data){
-    console.log(data.val());
-   });
-  for(var towerId in database.features){
-    console.log("working");
-    //display towerId.geometry.coordinates[0] & towerId.geometry.coordinates[1]
-    console.log(towerId.geometry.coordinates[0] & towerId.geometry.coordinates[1]);
-    console.log(childSnapshot.val());
-    
-   }
+  // var iconBase = 'assets/images/tower-icon.png';
+  // var marker = new google.maps.Marker({
 
-  var iconBase = 'assets/images/tower-icon.png';
-  var marker = new google.maps.Marker({
-    
-    position: initCoord,
-    icon: iconBase,
-    map: map
-  });
+  //   position: initCoord,
+  //   icon: iconBase,
+  //   map: map
+  // });
 };
 
 initMap();
@@ -52,26 +85,22 @@ initMap();
 var submitButton = $("#submitButton");
 
 //when user clicks submits show all towers
-submitButton.on("click", function () {
-  var userLat = $("#latInput").val().trim();
-  var userLong = $("#longInput").val().trim();
-  userLat = parseInt(userLat);
-  userLong = parseInt(userLong);
+submitButton.on("click", function (event) {
+  event.preventDefault();
 
-  map.setCenter({ lat: userLat, lng: userLong });
-
-  // var iconBase = 'assets/images/tower-icon.png';
-  // var marker = new google.maps.Marker({
-    
-  //   position: initCoord,
-  //   icon: iconBase,
-  //   map: map
-  });
+  var userLat = $("#latInput").val();
+  var userLong = $("#longInput").val();
+  userCity = $("#cityInput").val().trim();
 
 
+  // if (!isNaN(userLat) && !isNaN(userLong) && userCity !== "") {
+  //   console.log("Entered check input");
+  //   map.setCenter({ lat: userLat, lng: userLong });
+  //   $("#map").removeClass("hide");
+  //   $(".table").removeClass("hide");
+  // }
 
+  cityLoc();
 
+});
 
-// Populate the table with api response from fcc and 
-// Create icons for all nearby towers within a 1 mile radius
-// 
