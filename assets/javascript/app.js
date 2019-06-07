@@ -42,6 +42,11 @@ function marker(){
     map: map
   });
 }
+//display status
+function displayStatus(){
+  var displayStats = $(".displayStats").show();
+}
+displayStatus();
 
 //getting input value of text box
 var submitButton = $("#submitButton");
