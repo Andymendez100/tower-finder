@@ -1,3 +1,4 @@
+    
 // Initialize firebase
 var config = {
   apiKey: " AIzaSyDOUxD0QFTDg2BKTNPA10x1-fhhidwDD-I",
@@ -103,4 +104,3 @@ submitButton.on("click", function (event) {
   cityLoc();
 
 });
-
