@@ -15,4 +15,7 @@ html, body {
   padding: 0;
 }
 
-
+/* Change btn to fill row */
+.col.s12 > .btn-large {
+  width: 100%;
+}
