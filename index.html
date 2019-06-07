@@ -3,70 +3,102 @@
 
 <head>
     <meta charset="UTF-8">
+    <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tower-Finder</title>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
 
+    <!-- Import Google Icon Font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
 
 </head>
 
 <body>
-    <!-- Jumbotron (background img & logo) -->
-    <div class="jumbotron-fluid"></div>
+    <!-- Main Content -->
+    <main class="container">
 
-    <!-- Input form for address-->
-    <div class="form-group">
-        <label for="Latitude">Latitude: </label>
-        <input type="text" class="form-control" id="latInput" placeholder="latitude">
-    </div>
-    <div class="form-group">
-        <label for="Longitude">Longitude: </label>
-        <input type="text" class="form-control" id="longInput" placeholder="longitude">
-    </div>
-    <!-- Submit Button-->
-    <div class="button">
-        <input id="submitButton" type="submit" value="Submit">
-    </div>
-    <!--  discription of app  -->
-    <div id="appDiscription"></div>
-    <!-- How to use application-->
-    <div id="appDirections"></div>
+        <!-- Jumbotron (background img & logo) -->
+        <div class="row">
+            <div class="jumbotron-fluid"></div>
+        </div>
 
-    <!-- ------------------------------------------------------------------- -->
+        <!-- Location Input Form -->
+        <div class="row">
+            <form class="col s12">
+                <!-- Input fields -->
+                <div class="row">
+                    <div class="col s6 xl5 input-field">
+                        <input placeholder="33.9745" id="latInput" type="number" class="validate">
+                        <label for="Latitude">Latitude: </label>
+                    </div>
+                    <div class="col s6 xl5 input-field">
+                        <input placeholder="-117.3374" id="longInput" type="number" class="validate">
+                        <label for="Longitude">Longitude: </label>
+                    </div>
+                    <!-- Submit Button-->
+                    <div class="col">
+                        <button id="submitButton" class="btn waves-effect waves-light" type="submit"
+                            name="action">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
 
-    <!-- EVERYTHING AFTER THIS LINE IS REDIRECTED -->
+        <!-- App Infomation -->
+        <div class="row hide">
+            <div class="col">
+                <div id="appDescription"></div>
+            </div>
+            <div class="col">
+                <div id="appDirections"></div>
+            </div>
+        </div>
 
-    <!-- Google maps-->
-    <div id="map"></div>
-    <div id="legend">
-        <h3>Legend</h3>
-    </div>s
+        <!-- Google maps-->
+        <div id="map"></div>
 
-    <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Tower Owner</th>
-                <th scope="col">Latitude & Longitude</th>
-                <th scope="col">City</th>
-                <th scope="col">State</th>
-                <th scope="col">Tower height</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+        <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tower Owner</th>
+                            <th scope="col">Latitude & Longitude</th>
+                            <th scope="col">City</th>
+                            <th scope="col">State</th>
+                            <th scope="col">Tower height</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 
- <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HKLqN1MC49K-vtpVxamkZOfSO6-Ocfs
-&callback=initMap">
-</script>
+    <!-- Firebase Reference (Development)  -->
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase.js"></script>
+
+    <!-- Materialize JavaScript CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- Google Maps Javascript API -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HKLqN1MC49K-vtpVxamkZOfSO6-Ocfs&callback=initMap"></script>
+
+    <!-- Jquery CDN -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    <!-- Javascript -->
     <script src="assets/javascript/app.js"></script>
 </body>
 
