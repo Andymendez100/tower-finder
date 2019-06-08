@@ -1,4 +1,3 @@
-    
 // Initialize firebase
 var config = {
   apiKey: " AIzaSyDOUxD0QFTDg2BKTNPA10x1-fhhidwDD-I",
@@ -9,25 +8,64 @@ var config = {
 
 firebase.initializeApp(config);
 
-// Variables
+
+// ========================
+// Global Variables
+// ========================
+
 // Create a variable to reference the database.
 var database = firebase.database();
 var towerCoord = { lat: 33.9745, lng: -117.3374 };
-var userCity = "LA";
-var fbCity;
+var map;
+var userCity;
+var towerCity;
 var iconBase = 'assets/images/tower-icon.png';
+var queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
 
-// Creates cell towers in maps in user specified citites
-function cityLoc() {
+
+// ========================
+// Functions
+// ========================
+
+// Initializes map
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: { lat: 33, lng: -117 },
+    zoom: 8
+  });
+};
+
+// Ajax call to ArcGIS to get reverse geocode of coordinates
+function getCity() {
+  $.ajax({
+    url: queryURL,
+    method: "GET",
+  }).then(function (response) {
+    console.log(response);
+
+    // Sets userCity equal to the city containing coodinates
+    userCity = response.address.City;
+    console.log("User City: ", userCity);
+
+    // Calls makeTowers
+    makeTowers();
+  });
+}
+
+// Creates cell towers markers in maps in user coordinates
+function makeTowers() {
+
   // Goes into our database
   database.ref().on("value", function (data) {
+
     // Creates var tower for arrays in database
     for (tower in data.val()) {
+
       // Saves city loc in var
-      fbCity = data.val()[tower].LOCCITY;
+      towerCity = data.val()[tower].LOCCITY;
 
       // If user city equals the cell tower city
-      if (fbCity === userCity) {
+      if (towerCity === userCity) {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
@@ -62,45 +100,51 @@ function cityLoc() {
 }
 
 
+// ========================
+// Main 
+// ========================
 
-var map;
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: 33, lng: -117 },
-    zoom: 5
+// Shorthand document ready
+$(function () {
+
+  // Get user submit and runs core logic
+  $("#submitButton").on("click", function (event) {
+
+    // Prevents default form actions
+    event.preventDefault();
+
+    // Refresh map
+    initMap();
+
+    // Empty table
+    $("tbody").empty();
+
+    // Get user coordinates
+    var userLat = $("#latInput").val();
+    var userLong = $("#longInput").val();
+
+    console.log(userLat, userLong);
+
+    // Error Checking
+    // if (!isNaN(userLat) && !isNaN(userLong) && userCity !== "") {
+    //   console.log("Entered check input");
+    //   map.setCenter({ lat: userLat, lng: userLong });
+    //   $("#map").removeClass("hide");
+    //   $(".table").removeClass("hide");
+    // }
+
+    // Url for arcgis api call
+    queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
+
+    console.log(queryURL);
+
+    // Gets the city of user inputed coordinates
+    getCity();
+
   });
 
-  // var iconBase = 'assets/images/tower-icon.png';
-  // var marker = new google.maps.Marker({
-
-  //   position: initCoord,
-  //   icon: iconBase,
-  //   map: map
-  // });
-};
-
-initMap();
-
-
-//getting input value of text box
-var submitButton = $("#submitButton");
-
-//when user clicks submits show all towers
-submitButton.on("click", function (event) {
-  event.preventDefault();
-
-  var userLat = $("#latInput").val();
-  var userLong = $("#longInput").val();
-  userCity = $("#cityInput").val().trim();
-
-
-  // if (!isNaN(userLat) && !isNaN(userLong) && userCity !== "") {
-  //   console.log("Entered check input");
-  //   map.setCenter({ lat: userLat, lng: userLong });
-  //   $("#map").removeClass("hide");
-  //   $(".table").removeClass("hide");
-  // }
-
-  cityLoc();
-
 });
+
+
+
+
