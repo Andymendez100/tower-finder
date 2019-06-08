@@ -29,23 +29,20 @@ var queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServ
 
 // Initializes map
 function initMap() {
-  $(".preloader-wrapper").removeClass("hide");
+  $(".preloader-background").removeClass("hide");
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 33, lng: -117 },
     zoom: 10
   });
-  
+
   google.maps.event.addListenerOnce(map, 'tilesloaded', mapLoaded);
 
   function mapLoaded() {
-    $(".preloader-wrapper").addClass("hide");
-    
+    $(".preloader-background").addClass("hide");
   }
 
 };
-
-
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity() {
@@ -71,7 +68,6 @@ function makeTowers() {
   // Goes into our database
   database.ref().on("value", function (data) {
 
-
     // Creates var tower for arrays in database
     for (tower in data.val()) {
 
@@ -83,12 +79,8 @@ function makeTowers() {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
-        // Creates new google map marker
-        var marker = new google.maps.Marker({
-          position: towerCoord,
-          icon: iconBase,
-          map: map
-        });
+        // Adds a marker to the map at the coordinates passed in
+        addMarker(towerCoord);
 
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
@@ -111,10 +103,17 @@ function makeTowers() {
       }
     }
 
-    
-    // }
   });
+}
 
+// Adds a tower marker to the map and push to the array
+function addMarker(location) {
+  // Creates new google map marker
+  var marker = new google.maps.Marker({
+    position: location,
+    icon: iconBase,
+    map: map
+  });
 }
 
 // Checks if user input is a valid lat and long range
@@ -161,8 +160,8 @@ $(function () {
     $("tbody").empty();
 
     // Get user coordinates
-    var userLat = parseFloat($("#latInput").val());
-    var userLong = parseFloat($("#longInput").val());
+    var userLat = 33.9745; //parseFloat($("#latInput").val());
+    var userLong = -117.3374; //parseFloat($("#longInput").val());
 
     console.log(userLat, userLong);
 

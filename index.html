@@ -21,6 +21,24 @@
 
 <body>
 
+    <!-- Preloader Spinner -->
+    <div class="preloader-background hide">
+        <div class="preloader-wrapper active">
+            <div class="spinner-layer spinner-red-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+        <p class="blinking">Loading</p>
+    </div>
+
     <!-- Main Content -->
     <main class="container">
 
@@ -65,18 +83,6 @@
 
         <!-- Google maps-->
         <div id="map" class="hide"></div>
-        <!-- spinner -->
-        <div class="preloader-wrapper active hide">
-            <div class="spinner-layer spinner-red-only">
-              <div class="circle-clipper left">
-                <div class="circle"></div>
-              </div><div class="gap-patch">
-                <div class="circle"></div>
-              </div><div class="circle-clipper right">
-                <div class="circle"></div>
-              </div>
-            </div>
-          </div>
 
         <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
         <div class="row hide">
@@ -104,7 +110,7 @@
     <!-- Jquery CDN -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-    
+
 
     <!-- Materialize JavaScript CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
