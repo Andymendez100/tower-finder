@@ -158,7 +158,7 @@ $(function () {
       // Gets the city of user inputed coordinates
       getCity();
 
-      // Centers map
+      // Centers map to entered coordinates
       map.setCenter({ lat: userLat, lng: userLong });
 
       // Show map and table
