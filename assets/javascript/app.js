@@ -31,9 +31,9 @@ var queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServ
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 33, lng: -117 },
-    zoom: 8
+    zoom: 10
   });
-};
+}
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity() {
@@ -70,11 +70,11 @@ function makeTowers() {
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
         // Creates new google map marker
-        var marker = new google.maps.Marker({
-          position: towerCoord,
-          icon: iconBase,
-          map: map
-        });
+        // var marker = new google.maps.Marker({
+        //   position: towerCoord,
+        //   icon: iconBase,
+        //   map: map
+        // });
 
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
@@ -83,6 +83,7 @@ function makeTowers() {
         var state = data.val()[tower].LOCSTATE;
         var height = data.val()[tower].SUPSTRUC;
 
+        
         // Create a new row
         var newRow = $("<tr>").append(
           $("<td>").text(tOwner),
@@ -95,7 +96,33 @@ function makeTowers() {
         // Append the row to table
         $("#tower-table > tbody").append(newRow);
       }
+      // var contentString = towerCity;
+
+      //   var infowindow = new google.maps.InfoWindow({
+      //     content: contentString
+      //   });
+      //   marker.addListener('click', function() {
+      //     infowindow.open(map, marker);
+      //   });
+      var contentString = "City: " + towerCity + "<br>" + "Tower Owner: " + tOwner  + "<br>" + "State: " + state + "<br>" + "Tower Height: " + height;
+
+      initMarker(towerCoord, contentString);
     }
+  });
+}
+
+function initMarker(coords, contentString){
+  var marker = new google.maps.Marker({
+    position: coords,
+    icon: iconBase,
+    map: map
+  });
+
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
   });
 }
 
@@ -151,7 +178,7 @@ $(function () {
     // Error Checking
     if (isValid) {
       // Url for arcgis api call
-      queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
+      queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
 
       console.log(queryURL);
 
@@ -169,7 +196,6 @@ $(function () {
   });
 
 });
-
 
 
 
