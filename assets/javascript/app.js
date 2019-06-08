@@ -20,7 +20,7 @@ var map;
 var userCity;
 var towerCity;
 var iconBase = 'assets/images/tower-icon.png';
-var queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
+var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
 
 
 // ========================
