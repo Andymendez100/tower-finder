@@ -41,10 +41,6 @@
                         <input placeholder="-117.3374" id="longInput" type="number" class="validate">
                         <label for="Longitude">Longitude: </label>
                     </div>
-                    <div class="col s6 xl5 input-field">
-                        <input placeholder="Ex. Riverside" id="cityInput" type="text" class="validate">
-                        <label for="city">City: </label>
-                    </div>
                     <!-- Submit Button-->
                     <div class="col s12 xl2">
                         <button id="submitButton" class="btn-large blue darken-4 waves-effect waves-light" type="submit"
@@ -57,7 +53,7 @@
         </div>
 
         <!-- App Infomation -->
-        <div class="row hide">
+        <div class="row">
             <div class="col">
                 <div id="appDescription"></div>
             </div>
@@ -67,10 +63,10 @@
         </div>
 
         <!-- Google maps-->
-        <div id="map" class=""></div>
+        <div id="map" class="hide"></div>
 
         <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
-        <div class="row">
+        <div class="row hide">
             <div class="col s12">
                 <table id="tower-table" class="highlight centered responsive-table">
                     <thead>
