@@ -29,11 +29,23 @@ var queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServ
 
 // Initializes map
 function initMap() {
+  $(".preloader-wrapper").removeClass("hide");
+
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 33, lng: -117 },
-    zoom: 8
+    zoom: 10
   });
+  
+  google.maps.event.addListenerOnce(map, 'tilesloaded', mapLoaded);
+
+  function mapLoaded() {
+    $(".preloader-wrapper").addClass("hide");
+    
+  }
+
 };
+
+
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity() {
@@ -52,11 +64,13 @@ function getCity() {
   });
 }
 
+
 // Creates cell towers markers in maps in user coordinates
 function makeTowers() {
 
   // Goes into our database
   database.ref().on("value", function (data) {
+
 
     // Creates var tower for arrays in database
     for (tower in data.val()) {
@@ -96,7 +110,11 @@ function makeTowers() {
         $("#tower-table > tbody").append(newRow);
       }
     }
+
+    
+    // }
   });
+
 }
 
 // Checks if user input is a valid lat and long range
