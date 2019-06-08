@@ -50,11 +50,11 @@ function getCity() {
     url: queryURL,
     method: "GET",
   }).then(function (response) {
-    console.log(response);
+
 
     // Sets userCity equal to the city containing coodinates
     userCity = response.address.City;
-    console.log("User City: ", userCity);
+    
 
     // Calls makeTowers
     makeTowers();
@@ -186,6 +186,8 @@ $(function () {
   });
 
 });
+
+
 
 
 

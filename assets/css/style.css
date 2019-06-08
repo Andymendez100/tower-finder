@@ -40,6 +40,7 @@ html, body {
   z-index: -1;
 }
 
+
 /* Spinner */
 .preloader-background {
 	display: flex;
@@ -64,4 +65,9 @@ html, body {
 }
 @keyframes blinker {  
   50% { opacity: 0; }
+}
+
+#table-col{
+  height: 500px;
+  overflow: scroll;
 }
