@@ -20,7 +20,7 @@ var map;
 var userCity;
 var towerCity;
 var iconBase = 'assets/images/tower-icon.png';
-var queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
+var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
 
 
 // ========================
@@ -116,7 +116,7 @@ function isValid(lat, long) {
 
   // Checks if input is empty
   else if (lat == "" || long == "") {
-    // maybe add a modal here?
+    // maybe add a modal here
     return false;
   }
   return true;
@@ -151,14 +151,14 @@ $(function () {
     // Error Checking
     if (isValid) {
       // Url for arcgis api call
-      queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
+      queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
 
       console.log(queryURL);
 
       // Gets the city of user inputed coordinates
       getCity();
 
-      // Centers map
+      // Centers map to entered coordinates
       map.setCenter({ lat: userLat, lng: userLong });
 
       // Show map and table
