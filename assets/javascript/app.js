@@ -8,7 +8,6 @@ var config = {
 
 firebase.initializeApp(config);
 
-
 // ========================
 // Global Variables
 // ========================
@@ -69,21 +68,15 @@ function makeTowers() {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
-        // Creates new google map marker
-        // var marker = new google.maps.Marker({
-        //   position: towerCoord,
-        //   icon: iconBase,
-        //   map: map
-        // });
-
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
         var coords = data.val()[tower].LAT_DMS + ", " + data.val()[tower].LON_DMS;
+        var lat = data.val()[tower].LAT_DMS;
+        var long = data.val()[tower].LON_DMS;
         var city = data.val()[tower].LOCCITY;
         var state = data.val()[tower].LOCSTATE;
         var height = data.val()[tower].SUPSTRUC;
 
-        
         // Create a new row
         var newRow = $("<tr>").append(
           $("<td>").text(tOwner),
@@ -96,15 +89,7 @@ function makeTowers() {
         // Append the row to table
         $("#tower-table > tbody").append(newRow);
       }
-      // var contentString = towerCity;
-
-      //   var infowindow = new google.maps.InfoWindow({
-      //     content: contentString
-      //   });
-      //   marker.addListener('click', function() {
-      //     infowindow.open(map, marker);
-      //   });
-      var contentString = "City: " + towerCity + "<br>" + "Tower Owner: " + tOwner  + "<br>" + "State: " + state + "<br>" + "Tower Height: " + height;
+      var contentString = "LICENSEE:   " + tOwner + "<br>" + "LATITUDE:  " + lat + "<br>" +"LONGITUDE:  " + long + "<br>" + "CITY:  " + towerCity + "<br>" + "STATE:  " + state + "<br>" + "HEIGHT:  " + height + " ft.";
 
       initMarker(towerCoord, contentString);
     }
@@ -121,8 +106,19 @@ function initMarker(coords, contentString){
   var infowindow = new google.maps.InfoWindow({
     content: contentString
   });
-  marker.addListener('click', function() {
-    infowindow.open(map, marker);
+  marker.addListener('click', function () {
+    if (!marker.open) {
+      infowindow.open(map, marker);
+      marker.open = true;
+    }
+    else {
+      infowindow.close();
+      marker.open = false;
+    }
+    google.maps.event.addListener(map, 'click', function () {
+      infowindow.close();
+      marker.open = false;
+    });
   });
 }
 
@@ -148,7 +144,6 @@ function isValid(lat, long) {
   }
   return true;
 }
-
 
 // ========================
 // Main 
@@ -192,9 +187,7 @@ $(function () {
       $("#map").removeClass("hide");
       $(".row").removeClass("hide");
     }
-
   });
-
 });
 
 
