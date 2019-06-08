@@ -29,7 +29,7 @@ var queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServ
 
 // Initializes map
 function initMap() {
-    $(".preloader-background").removeClass("hide");
+  $(".preloader-background").removeClass("hide");
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 33, lng: -117 },
@@ -79,12 +79,8 @@ function makeTowers() {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
-        // Creates new google map marker
-        var marker = new google.maps.Marker({
-          position: towerCoord,
-          icon: iconBase,
-          map: map
-        });
+        // Adds a marker to the map at the coordinates passed in
+        addMarker(towerCoord);
 
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
@@ -107,6 +103,16 @@ function makeTowers() {
       }
     }
 
+  });
+}
+
+// Adds a tower marker to the map and push to the array
+function addMarker(location) {
+  // Creates new google map marker
+  var marker = new google.maps.Marker({
+    position: location,
+    icon: iconBase,
+    map: map
   });
 }
 
