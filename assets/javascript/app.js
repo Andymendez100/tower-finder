@@ -1,4 +1,4 @@
-    
+
 // Initialize firebase
 var config = {
   apiKey: " AIzaSyDOUxD0QFTDg2BKTNPA10x1-fhhidwDD-I",
@@ -17,14 +17,17 @@ var userCity = "LA";
 var fbCity;
 var iconBase = 'assets/images/tower-icon.png';
 
+
 // Creates cell towers in maps in user specified citites
 function cityLoc() {
+  // $(".spinner-layer").removeClass("hide");
   // Goes into our database
   database.ref().on("value", function (data) {
     // Creates var tower for arrays in database
     for (tower in data.val()) {
       // Saves city loc in var
       fbCity = data.val()[tower].LOCCITY;
+      fbCity = fbCity.toLowerCase();
 
       // If user city equals the cell tower city
       if (fbCity === userCity) {
@@ -58,7 +61,20 @@ function cityLoc() {
         $("#tower-table > tbody").append(newRow);
       }
     }
+    
+    // $("#map").onload = function() {myFunction()};
+
+    // function myFunction(){
+    //   console.log("working");
+    //   $(".spinner-layer").addClass("hide");
+    // }
   });
+
+  // then(function() {
+  //   console.log("working");
+  //   $(".spinner-layer").addClass("hide");
+  // })
+  
 }
 
 
@@ -70,16 +86,7 @@ function initMap() {
     zoom: 5
   });
 
-  // var iconBase = 'assets/images/tower-icon.png';
-  // var marker = new google.maps.Marker({
-
-  //   position: initCoord,
-  //   icon: iconBase,
-  //   map: map
-  // });
 };
-
-initMap();
 
 
 //getting input value of text box
@@ -88,19 +95,41 @@ var submitButton = $("#submitButton");
 //when user clicks submits show all towers
 submitButton.on("click", function (event) {
   event.preventDefault();
-
+  // clear markers on map
+  initMap();
+  // clear table data
+  $("tbody").empty();
   var userLat = $("#latInput").val();
   var userLong = $("#longInput").val();
   userCity = $("#cityInput").val().trim();
+  userCity = userCity.toLowerCase();
 
+  userLat = parseInt(userLat);
+  userLong = parseInt(userLong);
 
-  // if (!isNaN(userLat) && !isNaN(userLong) && userCity !== "") {
-  //   console.log("Entered check input");
-  //   map.setCenter({ lat: userLat, lng: userLong });
-  //   $("#map").removeClass("hide");
-  //   $(".table").removeClass("hide");
-  // }
+  if (!isNaN(userLat) && !isNaN(userLong) && userCity !== "") {
+    //console.log("Entered check input");
+    map.setCenter({ lat: userLat, lng: userLong });
+    $("#map").removeClass("hide");
+    $("#tableDiv").removeClass("hide");
+    cityLoc();
+  }
 
-  cityLoc();
+  //$(".spinner-layer").addClass("hide");
 
 });
+$(document).ready(function() {
+  $('.modal').modal();
+  $('select').material_select();
+  $('input.autocomplete').autocomplete2({
+    data: [
+      {id:1,text:'Apple',img:'http://placehold.it/250x250'},
+      {id:2,text:'Microsoft',img:'http://placehold.it/250x250'},
+      {id:3,text:'Google',img:'http://placehold.it/250x250'},
+    ]
+  });
+});
+
+  function getId() {
+    alert($('#autocomplete').data('id'));
+  }

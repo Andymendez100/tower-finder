@@ -20,6 +20,7 @@
 </head>
 
 <body>
+
     <!-- Main Content -->
     <main class="container">
 
@@ -41,10 +42,11 @@
                         <input placeholder="-117.3374" id="longInput" type="number" class="validate">
                         <label for="Longitude">Longitude: </label>
                     </div>
-                    <div class="col s6 xl5 input-field">
-                        <input placeholder="Ex. Riverside" id="cityInput" type="text" class="validate">
-                        <label for="city">City: </label>
-                    </div>
+                    <div class="input-field col s13">
+                            <i class="material-icons prefix">textsms</i>
+                            <input type="text" id="autocomplete" class="autocomplete" >
+                            <label for="autocomplete">Autocomplete</label>
+                          </div>
                     <!-- Submit Button-->
                     <div class="col s12 xl2">
                         <button id="submitButton" class="btn-large blue darken-4 waves-effect waves-light" type="submit"
@@ -57,7 +59,7 @@
         </div>
 
         <!-- App Infomation -->
-        <div class="row hide">
+        <div class="row">
             <div class="col">
                 <div id="appDescription"></div>
             </div>
@@ -67,10 +69,26 @@
         </div>
 
         <!-- Google maps-->
-        <div id="map" class=""></div>
+        <div id="map" class="hide"></div>
+
+        <!--  -->
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only hide">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
-        <div class="row">
+        <div class="row hide" id="tableDiv">
             <div class="col s12">
                 <table id="tower-table" class="highlight centered responsive-table">
                     <thead>
@@ -92,6 +110,11 @@
     <!-- Firebase Reference (Development)  -->
     <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase.js"></script>
 
+    <!-- Jquery CDN -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+    
+
     <!-- Materialize JavaScript CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
@@ -99,8 +122,6 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HKLqN1MC49K-vtpVxamkZOfSO6-Ocfs&callback=initMap"></script>
 
-    <!-- Jquery CDN -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
     <!-- Javascript -->
     <script src="assets/javascript/app.js"></script>
