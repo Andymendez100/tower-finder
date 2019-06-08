@@ -40,6 +40,28 @@ html, body {
   z-index: -1;
 }
 
-
-
-
+/* Spinner */
+.preloader-background {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(238, 238, 238, .5);
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.preloader-background p {
+  padding-top: 120px;
+  margin-left: -50px;
+  opacity: 0.8;
+} 
+/* Spinner Text */
+.blinking {
+	animation: blinker 0.5s linear infinite;
+}
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
