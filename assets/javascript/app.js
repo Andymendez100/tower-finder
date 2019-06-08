@@ -37,6 +37,9 @@ function initMap() {
     zoom: 10
   });
 
+}
+
+
   // 
   google.maps.event.addListenerOnce(map, 'tilesloaded', mapLoaded);
 
@@ -46,6 +49,7 @@ function initMap() {
   }
 
 };
+
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity() {
@@ -82,8 +86,10 @@ function makeTowers() {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
+      
         // Adds a marker to the map at the coordinates passed in
         addMarker(towerCoord);
+
 
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
@@ -92,6 +98,7 @@ function makeTowers() {
         var state = data.val()[tower].LOCSTATE;
         var height = data.val()[tower].SUPSTRUC;
 
+        
         // Create a new row
         var newRow = $("<tr>").append(
           $("<td>").text(tOwner),
@@ -104,6 +111,17 @@ function makeTowers() {
         // Append the row to table
         $("#tower-table > tbody").append(newRow);
       }
+      // var contentString = towerCity;
+
+      //   var infowindow = new google.maps.InfoWindow({
+      //     content: contentString
+      //   });
+      //   marker.addListener('click', function() {
+      //     infowindow.open(map, marker);
+      //   });
+      var contentString = "City: " + towerCity + "<br>" + "Tower Owner: " + tOwner  + "<br>" + "State: " + state + "<br>" + "Tower Height: " + height;
+
+      initMarker(towerCoord, contentString);
     }
 
   });
@@ -116,6 +134,21 @@ function addMarker(location) {
     position: location,
     icon: iconBase,
     map: map
+  });
+}
+
+function initMarker(coords, contentString){
+  var marker = new google.maps.Marker({
+    position: coords,
+    icon: iconBase,
+    map: map
+  });
+
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
   });
 }
 
@@ -189,9 +222,6 @@ $(function () {
   });
 
 });
-
-
-
 
 
 

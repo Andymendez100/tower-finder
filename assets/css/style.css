@@ -6,7 +6,7 @@
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
 #map {
-  height: 50%;
+  height: 70%;
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
@@ -41,6 +41,7 @@ html, body {
 }
 
 
+
 /* Spinner */
 .preloader-background {
 	display: flex;
@@ -71,3 +72,4 @@ html, body {
   height: 500px;
   overflow: scroll;
 }
+
