@@ -29,6 +29,7 @@ var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeSer
 
 // Initializes map
 function initMap() {
+  // 
   $(".preloader-background").removeClass("hide");
 
   map = new google.maps.Map(document.getElementById('map'), {
@@ -36,8 +37,10 @@ function initMap() {
     zoom: 10
   });
 
+  // 
   google.maps.event.addListenerOnce(map, 'tilesloaded', mapLoaded);
 
+  // 
   function mapLoaded() {
     $(".preloader-background").addClass("hide");
   }
