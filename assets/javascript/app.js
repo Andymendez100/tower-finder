@@ -99,6 +99,29 @@ function makeTowers() {
   });
 }
 
+// Checks if user input is a valid lat and long range
+function isValid(lat, long) {
+
+  // Checks latitude range
+  if (lat < -90 || lat > 90) {
+    // maybe add a modal here?
+    return false;
+  }
+
+  // Checks longitude range
+  else if (long < -180 || long > 180) {
+    // maybe add a modal here?
+    return false;
+  }
+
+  // Checks if input is empty
+  else if (lat == "" || long == "") {
+    // maybe add a modal here?
+    return false;
+  }
+  return true;
+}
+
 
 // ========================
 // Main 
@@ -120,26 +143,28 @@ $(function () {
     $("tbody").empty();
 
     // Get user coordinates
-    var userLat = $("#latInput").val();
-    var userLong = $("#longInput").val();
+    var userLat = parseFloat($("#latInput").val());
+    var userLong = parseFloat($("#longInput").val());
 
     console.log(userLat, userLong);
 
     // Error Checking
-    // if (!isNaN(userLat) && !isNaN(userLong) && userCity !== "") {
-    //   console.log("Entered check input");
-    //   map.setCenter({ lat: userLat, lng: userLong });
-    //   $("#map").removeClass("hide");
-    //   $(".table").removeClass("hide");
-    // }
+    if (isValid) {
+      // Url for arcgis api call
+      queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
 
-    // Url for arcgis api call
-    queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
+      console.log(queryURL);
 
-    console.log(queryURL);
+      // Gets the city of user inputed coordinates
+      getCity();
 
-    // Gets the city of user inputed coordinates
-    getCity();
+      // Centers map
+      map.setCenter({ lat: userLat, lng: userLong });
+
+      // Show map and table
+      $("#map").removeClass("hide");
+      $(".row").removeClass("hide");
+    }
 
   });
 
