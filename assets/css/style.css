@@ -40,6 +40,11 @@ html, body {
   z-index: -1;
 }
 
+#table-col{
+  height: 500px;
+  overflow: scroll;
+}
+
 
 
 
