@@ -151,7 +151,7 @@ $(function () {
     // Error Checking
     if (isValid) {
       // Url for arcgis api call
-      queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
+      queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
 
       console.log(queryURL);
 
