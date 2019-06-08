@@ -20,7 +20,7 @@ var map;
 var userCity;
 var towerCity;
 var iconBase = 'assets/images/tower-icon.png';
-var queryURL = "http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
+var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
 
 
 // ========================
@@ -50,11 +50,11 @@ function getCity() {
     url: queryURL,
     method: "GET",
   }).then(function (response) {
-    console.log(response);
+
 
     // Sets userCity equal to the city containing coodinates
     userCity = response.address.City;
-    console.log("User City: ", userCity);
+    
 
     // Calls makeTowers
     makeTowers();
@@ -186,6 +186,8 @@ $(function () {
   });
 
 });
+
+
 
 
 
