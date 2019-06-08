@@ -116,7 +116,7 @@ function isValid(lat, long) {
 
   // Checks if input is empty
   else if (lat == "" || long == "") {
-    // maybe add a modal here?
+    // maybe add a modal here
     return false;
   }
   return true;
