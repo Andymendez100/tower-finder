@@ -69,18 +69,22 @@ html, body {
   50% { opacity: 0; }
 }
 
-/* Creates table with scrollable tbody */
-tbody {
-  display: block;
-  height: 170px;
-  overflow-x: auto;
-}
-thead, tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
+/* Table */
 table {
   margin-top: 2.5%;
   border-style: groove;
+}
+
+/* Adds scrollable tbody on screens larger then 992 */
+@media only screen and (min-width: 992px) {
+  tbody {
+    display: block;
+    height: 170px;
+    overflow-x: auto;
+  }
+  thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
 }
