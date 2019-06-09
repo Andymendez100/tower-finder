@@ -8,7 +8,6 @@ var config = {
 
 firebase.initializeApp(config);
 
-
 // ========================
 // Global Variables
 // ========================
@@ -81,14 +80,14 @@ function makeTowers() {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
-
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
         var coords = data.val()[tower].LAT_DMS + ", " + data.val()[tower].LON_DMS;
+        var lat = data.val()[tower].LAT_DMS;
+        var long = data.val()[tower].LON_DMS;
         var city = data.val()[tower].LOCCITY;
         var state = data.val()[tower].LOCSTATE;
         var height = data.val()[tower].SUPSTRUC;
-
 
         // Create a new row
         var newRow = $("<tr>").append(
@@ -102,7 +101,7 @@ function makeTowers() {
         // Append the row to table
         $("#tower-table > tbody").append(newRow);
       }
-      var contentString = "City: " + towerCity + "<br>" + "Tower Owner: " + tOwner + "<br>" + "State: " + state + "<br>" + "Tower Height: " + height;
+      var contentString = "LICENSEE:   " + tOwner + "<br>" + "LATITUDE:  " + lat + "<br>" +"LONGITUDE:  " + long + "<br>" + "CITY:  " + towerCity + "<br>" + "STATE:  " + state + "<br>" + "HEIGHT:  " + height + " ft.";
 
       initMarker(towerCoord, contentString);
     }
@@ -173,7 +172,6 @@ function isValid(lat, long) {
   return true;
 }
 
-
 // ========================
 // Main 
 // ========================
@@ -226,9 +224,7 @@ $(function () {
       // Creating user marker
       userMarker();
     }
-
   });
-
 });
 
 
