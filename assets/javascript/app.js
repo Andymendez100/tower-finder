@@ -32,13 +32,11 @@ function initMap() {
   // 
   $(".preloader-background").removeClass("hide");
 
+  // 
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 33, lng: -117 },
     zoom: 10
   });
-
-}
-
 
   // 
   google.maps.event.addListenerOnce(map, 'tilesloaded', mapLoaded);
@@ -47,8 +45,7 @@ function initMap() {
   function mapLoaded() {
     $(".preloader-background").addClass("hide");
   }
-
-};
+}
 
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
@@ -58,10 +55,8 @@ function getCity() {
     method: "GET",
   }).then(function (response) {
 
-
     // Sets userCity equal to the city containing coodinates
     userCity = response.address.City;
-    
 
     // Calls makeTowers
     makeTowers();
@@ -86,10 +81,8 @@ function makeTowers() {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
-      
         // Adds a marker to the map at the coordinates passed in
         addMarker(towerCoord);
-
 
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
@@ -98,7 +91,6 @@ function makeTowers() {
         var state = data.val()[tower].LOCSTATE;
         var height = data.val()[tower].SUPSTRUC;
 
-        
         // Create a new row
         var newRow = $("<tr>").append(
           $("<td>").text(tOwner),
@@ -111,19 +103,11 @@ function makeTowers() {
         // Append the row to table
         $("#tower-table > tbody").append(newRow);
       }
-      // var contentString = towerCity;
 
-      //   var infowindow = new google.maps.InfoWindow({
-      //     content: contentString
-      //   });
-      //   marker.addListener('click', function() {
-      //     infowindow.open(map, marker);
-      //   });
-      var contentString = "City: " + towerCity + "<br>" + "Tower Owner: " + tOwner  + "<br>" + "State: " + state + "<br>" + "Tower Height: " + height;
+      var contentString = "City: " + towerCity + "<br>" + "Tower Owner: " + tOwner + "<br>" + "State: " + state + "<br>" + "Tower Height: " + height;
 
       initMarker(towerCoord, contentString);
     }
-
   });
 }
 
@@ -137,7 +121,8 @@ function addMarker(location) {
   });
 }
 
-function initMarker(coords, contentString){
+// 
+function initMarker(coords, contentString) {
   var marker = new google.maps.Marker({
     position: coords,
     icon: iconBase,
@@ -147,7 +132,7 @@ function initMarker(coords, contentString){
   var infowindow = new google.maps.InfoWindow({
     content: contentString
   });
-  marker.addListener('click', function() {
+  marker.addListener('click', function () {
     infowindow.open(map, marker);
   });
 }
@@ -218,9 +203,7 @@ $(function () {
       $("#map").removeClass("hide");
       $(".row").removeClass("hide");
     }
-
   });
-
 });
 
 
