@@ -20,6 +20,25 @@
 </head>
 
 <body>
+
+    <!-- Preloader Spinner -->
+    <div class="preloader-background hide">
+        <div class="preloader-wrapper active">
+            <div class="spinner-layer spinner-red-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+        <p class="blinking">Loading</p>
+    </div>
+
     <!-- Main Content -->
     <main class="container">
 
@@ -67,8 +86,8 @@
 
         <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
         <div class="row hide">
-            <div class="col s12">
-                <table id="tower-table" class="highlight centered responsive-table">
+            <div class="col s12" id="table-col">
+                <table id="tower-table" class="highlight centered responsive-table ">
                     <thead>
                         <tr>
                             <th scope="col" class="displayStats">LICENSEE</th>
@@ -88,6 +107,11 @@
     <!-- Firebase Reference (Development)  -->
     <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase.js"></script>
 
+    <!-- Jquery CDN -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+
+
     <!-- Materialize JavaScript CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
@@ -95,8 +119,6 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HKLqN1MC49K-vtpVxamkZOfSO6-Ocfs&callback=initMap"></script>
 
-    <!-- Jquery CDN -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
     <!-- Javascript -->
     <script src="assets/javascript/app.js"></script>
