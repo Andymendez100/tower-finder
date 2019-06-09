@@ -68,8 +68,11 @@ html, body {
   50% { opacity: 0; }
 }
 
+/* Table*/
 #table-col{
-  height: 500px;
+  height: 300px;
   overflow: scroll;
+  margin-top:5%;
+  border-style: solid;
 }
 
