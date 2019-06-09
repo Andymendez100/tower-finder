@@ -81,9 +81,6 @@ function makeTowers() {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
-        // Adds a marker to the map at the coordinates passed in
-        addMarker(towerCoord);
-
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
         var coords = data.val()[tower].LAT_DMS + ", " + data.val()[tower].LON_DMS;
@@ -104,20 +101,12 @@ function makeTowers() {
         $("#tower-table > tbody").append(newRow);
       }
 
+      // 
       var contentString = "City: " + towerCity + "<br>" + "Tower Owner: " + tOwner + "<br>" + "State: " + state + "<br>" + "Tower Height: " + height;
 
+      // 
       initMarker(towerCoord, contentString);
     }
-  });
-}
-
-// Adds a tower marker to the map and push to the array
-function addMarker(location) {
-  // Creates new google map marker
-  var marker = new google.maps.Marker({
-    position: location,
-    icon: iconBase,
-    map: map
   });
 }
 
@@ -190,8 +179,6 @@ $(function () {
     if (isValid) {
       // Url for arcgis api call
       queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
-
-      console.log(queryURL);
 
       // Gets the city of user inputed coordinates
       getCity();
