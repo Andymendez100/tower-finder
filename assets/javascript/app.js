@@ -8,7 +8,6 @@ var config = {
 
 firebase.initializeApp(config);
 
-
 // ========================
 // Global Variables
 // ========================
@@ -20,6 +19,7 @@ var map;
 var userCity;
 var towerCity;
 var iconBase = 'assets/images/tower-icon.png';
+var iconPerson = "assets/images/walking-icon.png"
 var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
 
 
@@ -29,11 +29,22 @@ var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeSer
 
 // Initializes map
 function initMap() {
+  // load spinner 
+  $(".preloader-background").removeClass("hide");
+
+  // getting the div map and putting the google maps api there
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 33, lng: -117 },
-    zoom: 8
+    zoom: 10
   });
-};
+  // Added an event listener to when the tiles are loaded
+  google.maps.event.addListenerOnce(map, 'tilesloaded', mapLoaded);
+
+  // 
+  function mapLoaded() {
+    $(".preloader-background").addClass("hide");
+  }
+}
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity() {
@@ -41,11 +52,11 @@ function getCity() {
     url: queryURL,
     method: "GET",
   }).then(function (response) {
-    console.log(response);
+
 
     // Sets userCity equal to the city containing coodinates
     userCity = response.address.City;
-    console.log("User City: ", userCity);
+
 
     // Calls makeTowers
     makeTowers();
@@ -69,16 +80,11 @@ function makeTowers() {
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
-        // Creates new google map marker
-        var marker = new google.maps.Marker({
-          position: towerCoord,
-          icon: iconBase,
-          map: map
-        });
-
         // Saving cell tower data into variables
         var tOwner = data.val()[tower].LICENSEE;
         var coords = data.val()[tower].LAT_DMS + ", " + data.val()[tower].LON_DMS;
+        var lat = data.val()[tower].LAT_DMS;
+        var long = data.val()[tower].LON_DMS;
         var city = data.val()[tower].LOCCITY;
         var state = data.val()[tower].LOCSTATE;
         var height = data.val()[tower].SUPSTRUC;
@@ -95,7 +101,51 @@ function makeTowers() {
         // Append the row to table
         $("#tower-table > tbody").append(newRow);
       }
+      var contentString = "LICENSEE:   " + tOwner + "<br>" + "LATITUDE:  " + lat + "<br>" +"LONGITUDE:  " + long + "<br>" + "CITY:  " + towerCity + "<br>" + "STATE:  " + state + "<br>" + "HEIGHT:  " + height + " ft.";
+
+      initMarker(towerCoord, contentString);
     }
+
+  });
+}
+
+// Adds a tower marker to the map and push to the array
+function addMarker(location) {
+  // Creates new google map marker
+  var marker = new google.maps.Marker({
+    position: location,
+    icon: iconBase,
+    map: map
+  });
+}
+
+// Created a function to create markers
+
+function initMarker(coords, contentString) {
+  var marker = new google.maps.Marker({
+    position: coords,
+    icon: iconBase,
+    map: map
+  });
+
+  // Info window to show information about towers
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+  // Listening for a click on the marker
+  marker.addListener('click', function () {
+    if (!marker.open) {
+      infowindow.open(map, marker);
+      marker.open = true;
+    }
+    else {
+      infowindow.close();
+      marker.open = false;
+    }
+    google.maps.event.addListener(map, 'click', function () {
+      infowindow.close();
+      marker.open = false;
+    });
   });
 }
 
@@ -122,7 +172,6 @@ function isValid(lat, long) {
   return true;
 }
 
-
 // ========================
 // Main 
 // ========================
@@ -145,6 +194,13 @@ $(function () {
     // Get user coordinates
     var userLat = parseFloat($("#latInput").val());
     var userLong = parseFloat($("#longInput").val());
+    function userMarker() {
+      var marker = new google.maps.Marker({
+        position: { lat: userLat, lng: userLong },
+        icon: iconPerson,
+        map: map
+      });
+    }
 
     console.log(userLat, userLong);
 
@@ -164,12 +220,12 @@ $(function () {
       // Show map and table
       $("#map").removeClass("hide");
       $(".row").removeClass("hide");
+
+      // Creating user marker
+      userMarker();
     }
-
   });
-
 });
-
 
 
 
