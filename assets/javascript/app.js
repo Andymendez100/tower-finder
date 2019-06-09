@@ -47,7 +47,6 @@ function initMap() {
   }
 }
 
-
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity() {
   $.ajax({
@@ -62,7 +61,6 @@ function getCity() {
     makeTowers();
   });
 }
-
 
 // Creates cell towers markers in maps in user coordinates
 function makeTowers() {
@@ -192,6 +190,4 @@ $(function () {
     }
   });
 });
-
-
 
