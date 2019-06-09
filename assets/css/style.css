@@ -6,11 +6,12 @@
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
 #map {
-  height: 70%;
+  height: 50%;
 }
+
 /* Optional: Makes the sample page fill the window. */
 html, body {
-  height: 100%;
+  height: 100vh;
   margin: 0;
   padding: 0;
 }
@@ -40,8 +41,6 @@ html, body {
   z-index: -1;
 }
 
-
-
 /* Spinner */
 .preloader-background {
 	display: flex;
@@ -53,12 +52,14 @@ html, body {
 	top: 0;
 	left: 0;
 	right: 0;
-	bottom: 0;
+  bottom: 0;
+  padding-bottom: 12em;
 }
 .preloader-background p {
   padding-top: 120px;
   margin-left: -50px;
   opacity: 0.8;
+  font-weight: bolder;
 } 
 /* Spinner Text */
 .blinking {
@@ -68,11 +69,18 @@ html, body {
   50% { opacity: 0; }
 }
 
-/* Table*/
-#table-col{
-  height: 300px;
-  overflow: scroll;
-  margin-top:5%;
-  border-style: solid;
+/* Creates table with scrollable tbody */
+tbody {
+  display: block;
+  height: 170px;
+  overflow-x: auto;
 }
-
+thead, tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+table {
+  margin-top: 2.5%;
+  border-style: groove;
+}
