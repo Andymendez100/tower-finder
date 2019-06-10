@@ -77,6 +77,7 @@ function makeTowers() {
 
       // If user city equals the cell tower city
       if (towerCity === userCity) {
+
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
@@ -158,8 +159,7 @@ function initMarker(coords, contentString) {
       infowindow.close();
       marker.open = false;
     });
-  });
-}
+  });}
 
 // Checks if user input is a valid lat and long range
 function isValid(lat, long) {
