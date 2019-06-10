@@ -19,6 +19,7 @@ var map;
 var userCity;
 var towerCity;
 var iconBase = 'assets/images/tower-icon.png';
+var iconPerson = "assets/images/walking-icon.png"
 var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
 
 
@@ -28,27 +29,24 @@ var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeSer
 
 // Initializes map
 function initMap() {
-  // 
+  // Unhide spinner 
   $(".preloader-background").removeClass("hide");
 
+  // getting the div map and putting the google maps api there
   map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: 33, lng: -117 },
-    zoom: 10
+    mapTypeId: 'terrain',
+    zoom: 13
   });
 
-}
-
-
-  // 
+  // Added an event listener to when the tiles are loaded
   google.maps.event.addListenerOnce(map, 'tilesloaded', mapLoaded);
 
   // 
   function mapLoaded() {
     $(".preloader-background").addClass("hide");
   }
-
-};
-
+}
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity() {
@@ -57,16 +55,13 @@ function getCity() {
     method: "GET",
   }).then(function (response) {
 
-
     // Sets userCity equal to the city containing coodinates
     userCity = response.address.City;
-    
 
     // Calls makeTowers
     makeTowers();
   });
 }
-
 
 // Creates cell towers markers in maps in user coordinates
 function makeTowers() {
@@ -106,11 +101,13 @@ function makeTowers() {
         // Append the row to table
         $("#tower-table > tbody").append(newRow);
       }
-      var contentString = "LICENSEE:   " + tOwner + "<br>" + "LATITUDE:  " + lat + "<br>" +"LONGITUDE:  " + long + "<br>" + "CITY:  " + towerCity + "<br>" + "STATE:  " + state + "<br>" + "HEIGHT:  " + height + " ft.";
 
+      // 
+      var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat + "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + towerCity + "<li><b>STATE:</b></li>" + state + "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>";
+
+      // 
       initMarker(towerCoord, contentString);
     }
-
   });
 }
 
@@ -124,16 +121,30 @@ function addMarker(location) {
   });
 }
 
-function initMarker(coords, contentString){
+// 
+function userMarker(lat, long) {
+  var marker = new google.maps.Marker({
+    position: { lat: lat, lng: long },
+    icon: iconPerson,
+    map: map
+  });
+}
+
+// Created a function to create markers
+function initMarker(coords, contentString) {
   var marker = new google.maps.Marker({
     position: coords,
     icon: iconBase,
-    map: map
+    map: map, 
+    title: 'Click for details'
   });
 
+  // Info window to show information about towers
   var infowindow = new google.maps.InfoWindow({
     content: contentString
   });
+
+  // Listening for a click on the marker
   marker.addListener('click', function () {
     if (!marker.open) {
       infowindow.open(map, marker);
@@ -167,11 +178,12 @@ function isValid(lat, long) {
 
   // Checks if input is empty
   else if (lat == "" || long == "") {
-    // maybe add a modal here?
+    // maybe add a modal here
     return false;
   }
   return true;
 }
+
 
 // ========================
 // Main 
@@ -193,30 +205,26 @@ $(function () {
     $("tbody").empty();
 
     // Get user coordinates
-    var userLat = 33.9745; //parseFloat($("#latInput").val());
-    var userLong = -117.3374; //parseFloat($("#longInput").val());
-
-    console.log(userLat, userLong);
+    var userLat = parseFloat($("#latInput").val());
+    var userLong = parseFloat($("#longInput").val());
 
     // Error Checking
     if (isValid) {
       // Url for arcgis api call
       queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
 
-      console.log(queryURL);
-
       // Gets the city of user inputed coordinates
       getCity();
 
-      // Centers map
+      // Centers map to entered coordinates
       map.setCenter({ lat: userLat, lng: userLong });
 
       // Show map and table
       $("#map").removeClass("hide");
       $(".row").removeClass("hide");
+
+      // Create user marker
+      userMarker(userLat, userLong);
     }
   });
 });
-
-
-

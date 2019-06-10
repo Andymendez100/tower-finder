@@ -23,7 +23,7 @@
 
     <!-- Preloader Spinner -->
     <div class="preloader-background hide">
-        <div class="preloader-wrapper active">
+        <div class="preloader-wrapper big active">
             <div class="spinner-layer spinner-red-only">
                 <div class="circle-clipper left">
                     <div class="circle"></div>
@@ -42,11 +42,6 @@
     <!-- Main Content -->
     <main class="container">
 
-        <!-- Jumbotron (background img & logo) -->
-        <div class="row">
-            <div class="jumbotron-fluid"></div>
-        </div>
-
         <!-- Location Input Form -->
         <div class="row">
             <form class="col s12">
@@ -62,13 +57,35 @@
                     </div>
                     <!-- Submit Button-->
                     <div class="col s12 xl2">
-                        <button id="submitButton" class="btn-large blue darken-4 waves-effect waves-light" type="submit"
+                        <button id="submitButton" class="btn-large blue darken-4 waves-effect waves-orange" type="submit"
                             name="action">Submit
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
                 </div>
             </form>
+        </div>
+
+        <!-- Google maps-->
+        <div id="map" class="hoverable hide"></div>
+
+        <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
+        <div class="row hide">
+            <div class="col s12">
+                <table id="tower-table" class="highlight centered responsive-table hoverable">
+                    <thead>
+                        <tr>
+                            <th scope="col">LICENSEE</th>
+                            <th scope="col">LAT & LONG</th>
+                            <th scope="col">CITY</th>
+                            <th scope="col">STATE</th>
+                            <th scope="col">HEIGHT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- App Infomation -->
@@ -81,47 +98,23 @@
             </div>
         </div>
 
-        <!-- Google maps-->
-        <div id="map" class="hide"></div>
-
-        <!-- Table with nearby cell towers (tower owner, lat & long, city, state, tower height)-->
-        <div class="row hide">
-            <div class="col s12" id="table-col">
-                <table id="tower-table" class="highlight centered responsive-table ">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="displayStats">LICENSEE</th>
-                            <th scope="col" class="displayStats">LATITUDE & LONGITUDE</th>
-                            <th scope="col" class="displayStats">CITY</th>
-                            <th scope="col" class="displayStats">STATE</th>
-                            <th scope="col" class="displayStats">HEIGHT</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </main>
-    
+
     <!-- Firebase Reference (Development)  -->
     <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase.js"></script>
 
     <!-- Jquery CDN -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-
-
     <!-- Materialize JavaScript CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <!-- Google Maps Javascript API -->
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HKLqN1MC49K-vtpVxamkZOfSO6-Ocfs&callback=initMap"></script>
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HKLqN1MC49K-vtpVxamkZOfSO6-Ocfs"></script>
 
     <!-- Javascript -->
     <script src="assets/javascript/app.js"></script>
+
 </body>
 
 </html>
