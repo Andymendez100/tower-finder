@@ -77,6 +77,7 @@ function makeTowers() {
 
       // If user city equals the cell tower city
       if (towerCity === userCity) {
+
         // Get coordinates for new cell tower
         towerCoord = { lat: data.val()[tower].LAT_DMS, lng: data.val()[tower].LON_DMS };
 
@@ -103,7 +104,7 @@ function makeTowers() {
       }
 
       // 
-      var contentString = "LICENSEE:   " + tOwner + "<br>" + "LATITUDE:  " + lat + "<br>" + "LONGITUDE:  " + long + "<br>" + "CITY:  " + towerCity + "<br>" + "STATE:  " + state + "<br>" + "HEIGHT:  " + height + " ft.";
+      var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat + "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + towerCity + "<li><b>STATE:</b></li>" + state + "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>";
 
       // 
       initMarker(towerCoord, contentString);
@@ -135,7 +136,8 @@ function initMarker(coords, contentString) {
   var marker = new google.maps.Marker({
     position: coords,
     icon: iconBase,
-    map: map
+    map: map, 
+    title: 'Click for details'
   });
 
   // Info window to show information about towers
@@ -157,8 +159,7 @@ function initMarker(coords, contentString) {
       infowindow.close();
       marker.open = false;
     });
-  });
-}
+  });}
 
 // Checks if user input is a valid lat and long range
 function isValid(lat, long) {
@@ -227,4 +228,3 @@ $(function () {
     }
   });
 });
-
