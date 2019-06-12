@@ -1,4 +1,5 @@
 // Initialize firebase
+$(document).ready( function() {
 var config = {
   apiKey: " AIzaSyDOUxD0QFTDg2BKTNPA10x1-fhhidwDD-I",
   authDomain: "tower-finder-7c3ef.firebaseapp.com",
@@ -68,6 +69,7 @@ function makeTowers() {
 
   // Goes into our database
   database.ref().on("value", function (data) {
+    
 
     // Creates var tower for arrays in database
     for (tower in data.val()) {
@@ -89,6 +91,8 @@ function makeTowers() {
         var city = data.val()[tower].LOCCITY;
         var state = data.val()[tower].LOCSTATE;
         var height = data.val()[tower].SUPSTRUC;
+        var towerId = tower;
+        var tableId= tower;
 
         // Create a new row
         var newRow = $("<tr>").append(
@@ -97,30 +101,34 @@ function makeTowers() {
           $("<td>").text(city),
           $("<td>").text(state),
           $("<td>").text(height)
-        );
+        ).attr("data-id", towerId);
+
 
         // Append the row to table
         $("#tower-table > tbody").append(newRow);
       }
 
       // 
-      var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat + "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + towerCity + "<li><b>STATE:</b></li>" + state + "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>";
+      var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat +
+       "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + city + "<li><b>STATE:</b></li>" + state +
+        "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>" + towerId;
 
+   
       // 
       initMarker(towerCoord, contentString);
     }
   });
 }
 
-// Adds a tower marker to the map and push to the array
-function addMarker(location) {
-  // Creates new google map marker
-  var marker = new google.maps.Marker({
-    position: location,
-    icon: iconBase,
-    map: map
-  });
-}
+// // Adds a tower marker to the map and push to the array
+// function addMarker(location) {
+//   // Creates new google map marker
+//   var marker = new google.maps.Marker({
+//     position: location,
+//     icon: iconBase,
+//     map: map
+//   });
+// }
 
 // 
 function userMarker(lat, long) {
@@ -130,15 +138,16 @@ function userMarker(lat, long) {
     map: map
   });
 }
-
 // Created a function to create markers
 function initMarker(coords, contentString) {
   var marker = new google.maps.Marker({
     position: coords,
     icon: iconBase,
-    map: map, 
+    map: map,
+    id:tower,
     title: 'Click for details'
   });
+
 
   // Info window to show information about towers
   var infowindow = new google.maps.InfoWindow({
@@ -147,6 +156,7 @@ function initMarker(coords, contentString) {
 
   // Listening for a click on the marker
   marker.addListener('click', function () {
+    
     if (!marker.open) {
       infowindow.open(map, marker);
       marker.open = true;
@@ -159,15 +169,18 @@ function initMarker(coords, contentString) {
       infowindow.close();
       marker.open = false;
     });
-  });}
+  });
+}
 
 // Checks if user input is a valid lat and long range
+
 function isValid(lat, long) {
 
   // Checks latitude range
   if (lat < -90 || lat > 90) {
     // maybe add a modal here?
     return false;
+    console.log("working");
   }
 
   // Checks longitude range
@@ -177,12 +190,13 @@ function isValid(lat, long) {
   }
 
   // Checks if input is empty
-  else if (lat == "" || long == "") {
+  else if (isNaN(lat) || isNaN(long)) {
     // maybe add a modal here
     return false;
   }
   return true;
 }
+
 
 
 // ========================
@@ -198,19 +212,20 @@ $(function () {
     // Prevents default form actions
     event.preventDefault();
 
-    // Refresh map
-    initMap();
-
-    // Empty table
-    $("tbody").empty();
-
     // Get user coordinates
     var userLat = parseFloat($("#latInput").val());
     var userLong = parseFloat($("#longInput").val());
 
     // Error Checking
-    if (isValid) {
-      // Url for arcgis api call
+    if (isValid(userLat, userLong)) {
+
+      // Refresh map
+      initMap();
+
+      // Empty table
+      $("tbody").empty();
+
+      // Url fogr arcis api call
       queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
 
       // Gets the city of user inputed coordinates
@@ -226,5 +241,15 @@ $(function () {
       // Create user marker
       userMarker(userLat, userLong);
     }
+    // else{
+    //   $(".preloader-background").addClass("hide");
+    // }
+
   });
 });
+});
+
+$("tbody").on("click", "tr" , function(){
+  var towerId = $(this).attr("data-id");
+
+})
