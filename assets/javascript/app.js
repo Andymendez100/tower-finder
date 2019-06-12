@@ -109,9 +109,12 @@ function makeTowers() {
       }
 
       // 
-      var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat +
-       "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + city + "<li><b>STATE:</b></li>" + state +
-        "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>" + towerId;
+      var contentString = "<div>" + "<br>" + "<b>LICENSEE: </b>" + tOwner + "<br>" + "<b>LATITUDE: </b>" + lat +
+       "<br>" + "<b>LONGITUDE: </b>" + long + "<br>" + "<b>CITY: </b>" + city + "<br>" + "<b>STATE: </b>" + state +
+        "<br>" + "<b>HEIGHT: </b>" + height + " ft." + "</div>";
+      //   var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat +
+      //  "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + city + "<li><b>STATE:</b></li>" + state +
+      //   "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>";
 
    
       // 
@@ -119,17 +122,6 @@ function makeTowers() {
     }
   });
 }
-
-// // Adds a tower marker to the map and push to the array
-// function addMarker(location) {
-//   // Creates new google map marker
-//   var marker = new google.maps.Marker({
-//     position: location,
-//     icon: iconBase,
-//     map: map
-//   });
-// }
-
 // 
 function userMarker(lat, long) {
   var marker = new google.maps.Marker({
@@ -151,7 +143,8 @@ function initMarker(coords, contentString) {
 
   // Info window to show information about towers
   var infowindow = new google.maps.InfoWindow({
-    content: contentString
+    content: contentString,
+    maxWidth: 400
   });
 
   // Listening for a click on the marker
@@ -165,7 +158,7 @@ function initMarker(coords, contentString) {
       infowindow.close();
       marker.open = false;
     }
-    google.maps.event.addListener(map, 'click', function () {
+      google.maps.event.addListener(map, 'click', function () {
       infowindow.close();
       marker.open = false;
     });
@@ -180,7 +173,6 @@ function isValid(lat, long) {
   if (lat < -90 || lat > 90) {
     // maybe add a modal here?
     return false;
-    console.log("working");
   }
 
   // Checks longitude range
@@ -241,15 +233,10 @@ $(function () {
       // Create user marker
       userMarker(userLat, userLong);
     }
-    // else{
-    //   $(".preloader-background").addClass("hide");
-    // }
-
   });
 });
-});
-
 $("tbody").on("click", "tr" , function(){
   var towerId = $(this).attr("data-id");
-
-})
+  console.log(towerId);
+});
+});
