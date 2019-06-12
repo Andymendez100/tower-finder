@@ -22,9 +22,9 @@ $(document).ready(function () {
   var iconBase = 'assets/images/tower-icon.png';
   var iconPerson = "assets/images/walking-icon.png"
   var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
-
   var markers = [];
-  // var infowindow;
+
+
   // ========================
   // Functions
   // ========================
@@ -71,9 +71,6 @@ $(document).ready(function () {
     // Goes into our database
     database.ref().on("value", function (data) {
 
-
-
-
       // Creates var tower for arrays in database
       for (tower in data.val()) {
 
@@ -95,7 +92,6 @@ $(document).ready(function () {
           var state = data.val()[tower].LOCSTATE;
           var height = data.val()[tower].SUPSTRUC;
           var towerId = tower;
-          var tableId = tower;
 
           // Create a new row
           var newRow = $("<tr>").append(
@@ -114,11 +110,10 @@ $(document).ready(function () {
         // 
         var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat +
           "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + city + "<li><b>STATE:</b></li>" + state +
-          "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>" ;
-
+          "<li><b>TowerID:</b></li>" + towerId + "</ul>" ;
 
         // 
-        initMarker(towerCoord, contentString);
+        initMarker(towerCoord, contentString, towerId);
       }
     });
   }
@@ -131,17 +126,16 @@ $(document).ready(function () {
       map: map
     });
   }
+
   // Created a function to create markers
-  function initMarker(coords, contentString) {
+  function initMarker(coords, contentString, towerId) {
     var marker = new google.maps.Marker({
       position: coords,
       icon: iconBase,
       map: map,
-      id: tower,
+      id: towerId,
       title: 'Click for details'
     });
-
-    markers.push(marker)
 
     // Info window to show information about towers
     infowindow = new google.maps.InfoWindow({
@@ -153,7 +147,6 @@ $(document).ready(function () {
     marker.addListener('click', function (event) {
       // open the info window on top of marker
       infowindow.open(map, marker);
-      
 
       if (!marker.open) {
         infowindow.open(map, marker);
@@ -163,11 +156,14 @@ $(document).ready(function () {
         infowindow.close();
         marker.open = false;
       }
-      google.maps.event.addListener(map, 'click', function () {
-        infowindow.close();
-        marker.open = false;
-      });
-    });
+      // google.maps.event.addListener(map, 'click', function () {
+      //   infowindow.close();
+      //   marker.open = false;
+      // });
+    })(i);
+
+    // 
+    markers.push(marker);
 
   }
 
@@ -243,14 +239,25 @@ $(document).ready(function () {
     });
   });
 
-  // Whenever the table is clicked it shows the markers info window
+  // When table row is clicked open the corresponding markers info window
   $("tbody").on("click", "tr", function (e) {
+    // 
     var towerId = $(this).attr("data-id");
+    console.log("TowerID", towerId);
 
-    var selectedMarker = markers.findIndex(function(marker) {
-      return marker.id === towerId;
-    })    
-    infowindow.open(map, markers[selectedMarker]);
+    console.log(markers[towerId]);
+
+    infowindow.open(map, markers[towerId]);
+
+    // // 
+    // var selectedMarker = markers.findIndex(function(marker) {
+    //   console.log("marker", marker);
+    //   return marker.id === towerId;
+    // })
+    // console.log("selectedMarker", selectedMarker);
+
+    // // 
+    // infowindow.open(map, markers[selectedMarker]);
 
 
   })
