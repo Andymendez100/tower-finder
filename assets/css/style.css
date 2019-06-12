@@ -108,3 +108,9 @@ table {
     table-layout: fixed;
   }
 }
+/* Just use .gm-style-iw */ 
+.gm-style-iw-d {
+  overflow: auto;
+  width: 200px; 
+  min-height: 50%;
+}
