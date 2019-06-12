@@ -6,12 +6,11 @@
 /* Always set the map height explicitly to define the size of the div
  * element that contains the map. */
 #map {
-  height: 50%;
+  height: 70%;
 }
-
 /* Optional: Makes the sample page fill the window. */
 html, body {
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -52,14 +51,12 @@ html, body {
 	top: 0;
 	left: 0;
 	right: 0;
-  bottom: 0;
-  padding-bottom: 12em;
+	bottom: 0;
 }
 .preloader-background p {
   padding-top: 120px;
-  margin-left: -59px;
+  margin-left: -50px;
   opacity: 0.8;
-  font-weight: bolder;
 } 
 /* Spinner Text */
 .blinking {
@@ -108,9 +105,8 @@ table {
     table-layout: fixed;
   }
 }
-/* Just use .gm-style-iw */ 
-.gm-style-iw-d {
-  overflow: auto;
-  width: 200px; 
-  min-height: 50%;
+
+#table-col{
+  height: 500px;
+  overflow: scroll;
 }
