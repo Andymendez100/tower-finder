@@ -119,7 +119,7 @@ function addMarker(location, tid) {
 
       // Scroll to tower in table
       var element = $("[data-id=" + tid + "]")[0];
-      element.scrollIntoView({ block: "nearest", inline:"start", behavior: "smooth" });
+      element.scrollIntoView({ block: "nearest", inline: "start", behavior: "smooth" });
     });
   }
 
@@ -223,17 +223,20 @@ $(function () {
   initFirebase();
 
   // Initializes map
-  initMap(towerCoord);
+  initMap({ lat: 33.9745, lng: -117.3374 });
+
+  // Prevent right click context menu on map
+  
 
   // Get user submit and runs core logic
-  $("#submitButton").on("click", function (event) {
+  google.maps.event.addListener(map, "rightclick", function (event) {
 
     // Prevents default form actions
-    event.preventDefault();
+    //event.preventDefault();
 
     // Get user coordinates
-    var userLat = parseFloat($("#latInput").val());
-    var userLong = parseFloat($("#longInput").val());
+    var userLat = event.latLng.lat(); //parseFloat($("#latInput").val());
+    var userLong = event.latLng.lng(); //parseFloat($("#longInput").val());
     userCoord = { lat: userLat, lng: userLong };
 
     // Error Checking
@@ -276,7 +279,7 @@ $(function () {
           makeTowers(towers);
 
           // Show map and table
-          $("#map").removeClass("hide");
+          //$("#map").removeClass("hide");
           $(".row").removeClass("hide");
 
           // Remove preloader
