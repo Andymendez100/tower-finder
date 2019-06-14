@@ -86,7 +86,7 @@ function makeTowers(data) {
     var state = data[tower].LOCSTATE;
     var height = data[tower].SUPSTRUC;
     var tid = i;
-    //console.log("tid", tid);
+    console.log("tid", tid);
     i++;
 
     // Get coordinates for new cell tower
@@ -97,6 +97,7 @@ function makeTowers(data) {
 
     // Populate table
     populateTable(tOwner, lat, long, city, state, height, towerCoord, tid);
+    console.log("tid", tid);
   }
 }
 
@@ -109,7 +110,7 @@ function populateTable(owner, lat, long, city, state, height, towerCoord, tid) {
     $("<td>").text(city),
     $("<td>").text(state),
     $("<td>").text(height)
-  ).data("coordinates", towerCoord).attr("data-id", tid);
+  ).attr("data-id", tid);
 
   // Append the row to document table
   $("#tower-table > tbody").append(newRow);
@@ -151,6 +152,18 @@ function clearMarkers() {
   setMapOnAll(null);
 }
 
+// Creates a inforwindow for the passed in marker
+function makeInfowindow(marker) {
+  infowindow = new google.maps.InfoWindow({
+    content: infoString
+  });
+
+  // Open infowindow
+  infowindow.open(map, markers[marker]);
+
+  // Move map to selected tower coordinates
+  map.panTo(markers[marker].position)
+}
 
 /*
 // Attaches an info window to a marker with the provided message
@@ -285,30 +298,25 @@ $("tbody").on("click", "tr", function () {
   console.log("TowerID: ", $(this).attr("data-id"));
 
 
-// ====
+  // ====
+  var row = $("tbody").find("[data-id='" + towerID + "']")[0]; //$("tbody > tr").eq(towerID-1)[0];
+  var cell = $(row).find("td:eq(" + 0 + ")").text(); //$(row > "td").child[0]; //.eq(0).text(); //  .eq(0).text();
+  console.log("Row: ", row);
+  console.log("Cell: ", cell);
+
   // Reset infowindow string to empty
   infoString = "";
 
-  // for eveery cell in table
+  // For every cell in table
   for (let i = 0; i < this.cells.length; i++) {
     // Generate and add headers with cell data
     infoString += "<b>" + $("thead > tr > th").eq(i).text() + ": </b>" + this.cells[i].innerHTML + "<br>";
   }
-// ====
+  // ====
 
- // ====
+
   // Generate infowindow
-  infowindow = new google.maps.InfoWindow({
-    content: infoString
-  });
-
-  // Open infowindow
-  infowindow.open(map, markers[towerID]);
-
-  // Move map to selected tower coordinates
-  map.panTo(markers[towerID].position)
-// ====
-
+  makeInfowindow(towerID);
 });
 
 //markers[towerID].addListener("click", function)
