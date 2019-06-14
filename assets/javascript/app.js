@@ -12,6 +12,7 @@ var iconUser = "assets/images/walking-icon.png";
 var userCoord;
 var markers = [];
 var infowindow;
+var activeInfoWindow;
 
 
 // ========================
@@ -21,9 +22,9 @@ var infowindow;
 // Initialize firebase
 function initFirebase() {
   var config = {
-    apiKey: " AIzaSyDOUxD0QFTDg2BKTNPA10x1-fhhidwDD-I",
-    authDomain: "tower-finder-7c3ef.firebaseapp.com",
-    databaseURL: "https://tower-finder-7c3ef.firebaseio.com/",
+    apiKey: "AIzaSyDqBdI91HIVFwk6UhLGvfuGP8Lg42FQp80",
+    authDomain: "tower-finder-30aa8.firebaseapp.com",
+    databaseURL: "https://tower-finder-30aa8.firebaseio.com",
     storageBucket: "gs://tower-finder-7c3ef.appspot.com/"
   };
   firebase.initializeApp(config);
@@ -83,7 +84,7 @@ function makeTowers(data) {
     var state = data[tower].LOCSTATE;
     var height = data[tower].SUPSTRUC;
 
-    // TowerID
+    // Set towerID and increment
     var tid = i;
     i++;
 
@@ -91,7 +92,7 @@ function makeTowers(data) {
     towerCoord = { lat: lat, lng: long };
 
     // Add tower marker to the array
-    markers.push(addMarker(towerCoord));
+    markers.push(addMarker(towerCoord, tid));
 
     // Populate table
     populateTable(tOwner, lat, long, city, state, height, towerCoord, tid);
@@ -114,12 +115,24 @@ function populateTable(owner, lat, long, city, state, height, towerCoord, tid) {
 }
 
 // Add a marker to the map at location
-function addMarker(location) {
+function addMarker(location, tid) {
   var marker = new google.maps.Marker({
     position: location,
     icon: iconBase,
     map: map
   });
+
+  // If more than 2 params are passed in add a listener
+  if (tid) { //arguments.length >= 2) {
+    marker.addListener("click", function () {
+      
+
+      // Create a infowindow with the relavant content
+      makeInfowindow(tid, makeInfoContent(tid));
+
+      
+    });
+  }
 
   // Returns the marker
   return marker;
@@ -149,27 +162,34 @@ function clearMarkers() {
 }
 
 // Creates a inforwindow for the passed in marker
-function makeInfowindow(marker, infoContent) {
+function makeInfowindow(markerID, infoContent) {
   infowindow = new google.maps.InfoWindow({
     content: infoContent
   });
 
+  // Closes the previous infowindow when a new one is opened
+  if(activeInfoWindow) {
+    activeInfoWindow.close();
+  }
+  // New infowindow is set to the current/avtive one
+  activeInfoWindow = infowindow;
+
   // Open infowindow
-  infowindow.open(map, markers[marker]);
+  infowindow.open(map, markers[markerID]);
 
   // Move map to selected tower coordinates
-  map.panTo(markers[marker].position)
+  map.panTo(markers[markerID].position)
 }
 
-// 
-function makeInfoString(towerID) {
+// Gets and creates infowindow content
+function makeInfoContent(towerID) {
   // Variable to store infowindow content
   var infoString = "";
 
   // Gets the tower row
   var row = $("tbody").find("[data-id='" + towerID + "']")[0];
 
-  // For every cell in table
+  // For every cell in table row
   for (let i = 0; i < row.cells.length; i++) {
     // Generate and add headers with cell data
     infoString += "<b>" + $("thead > tr > th").eq(i).text() + ": </b>" + $(row).find("td:eq(" + i + ")").text() + "<br>";
@@ -179,33 +199,6 @@ function makeInfoString(towerID) {
   return infoString;
 }
 
-/*
-// Attaches an info window to a marker with the provided message
-function attachMessage(marker, content) {
-
-  // Info window to show information about towers
-  var infowindow = new google.maps.InfoWindow({
-    content: content,
-    maxWidth: 200
-  });
-
-  // Listening for a click on the marker
-  marker.addListener('click', function (event) {
-    // open the info window on top of marker
-    infowindow.open(map, marker);
-
-    // 
-    if (!marker.open) {
-      infowindow.open(map, marker);
-      marker.open = true;
-    }
-    else {
-      infowindow.close();
-      marker.open = false;
-    }
-  });
-}
-*/
 
 // Checks if user input is a valid lat and long range
 function isValid(lat, long) {
@@ -286,6 +279,7 @@ $(function () {
 
           // Centers map on user
           map.setCenter(userCoord);
+          map.setZoom(13);
 
           // Make towers
           makeTowers(towers);
@@ -305,20 +299,13 @@ $(function () {
   $("tbody").on("click", "tr", function () {
     // Get tower position in array
     var towerID = $(this).attr("data-id");
-    //console.log("TowerID: ", $(this).attr("data-id"));
+    console.log("TowerID: ", $(this).attr("data-id"));
 
     // Creates and returns infowindow content
-    var infoContent = makeInfoString(towerID);
+    var infoContent = makeInfoContent(towerID);
 
     // Generate infowindow
     makeInfowindow(towerID, infoContent);
   });
 });
 
-
-
-//markers[towerID].addListener("click", function)
-
-// google.maps.event.addListener(marker, "click", function(event) {
-//   alert("clicked");
-// })
