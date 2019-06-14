@@ -110,3 +110,9 @@ table {
   height: 500px;
   overflow: scroll;
 }
+#appDescription{
+  box-shadow: 5px 10px 5px grey; 
+}
+footer{
+  clear:both;
+}

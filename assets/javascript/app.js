@@ -109,6 +109,7 @@ $(document).ready(function () {
           // Append the row to table
           $("#tower-table > tbody").append(newRow);
         }
+        console.log('city', city);
         if(lat == undefined){
           // just go to the next interation, do nothing (google this later)
           continue;
@@ -152,26 +153,21 @@ $(document).ready(function () {
 
     window_arr.push(infowindow);
 
-
     // Listening for a click on the marker
     marker.addListener('click', function (event) {
+
+       // before we open the NEW window, we close the CURRENT window
+      if(curr_window !== undefined){
+        curr_window.close();
+      } 
+      // Open the info window on the marker with the same id as  the table row;
+
+      curr_window = infowindow;
+      
+      
       // open the info window on top of marker
       infowindow.open(map, marker);
-      
-
-      
-      if (!marker.open) {
-        infowindow.open(map, marker);
-        marker.open = true;
-      }
-       else if (cur_marker) {
-        cur_marker = true;
-        new_marker = true;
-      }
-      else {
-        infowindow.close();
-        marker.open = false;
-      }
+  
       google.maps.event.addListener(map, 'click', function () {
         infowindow.close();
         marker.open = false;
