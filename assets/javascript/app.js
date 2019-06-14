@@ -11,7 +11,8 @@ var iconBase = 'assets/images/tower-icon.png';
 var iconUser = "assets/images/walking-icon.png";
 var userCoord;
 var markers = [];
-//var infoTemplate = '<div><h4>%Title</h4>%Tel<br><br>%Add</div>';
+var infowindow;
+var infoString;
 
 
 // ========================
@@ -73,9 +74,9 @@ function getTowers(userCity) {
 function makeTowers(data) {
 
   // Match towerId to array or markers
-  var i = 0;
-  
-  //
+  var i = 1;
+
+  // Loop through all towers in response data
   for (tower in data) {
     // Save cell tower data into variables
     var tOwner = data[tower].LICENSEE;
@@ -84,8 +85,8 @@ function makeTowers(data) {
     var city = data[tower].LOCCITY;
     var state = data[tower].LOCSTATE;
     var height = data[tower].SUPSTRUC;
-    var id = i;
-    //console.log("id", id);
+    var tid = i;
+    //console.log("tid", tid);
     i++;
 
     // Get coordinates for new cell tower
@@ -95,12 +96,12 @@ function makeTowers(data) {
     markers.push(addMarker(towerCoord));
 
     // Populate table
-    populateTable(tOwner, lat, long, city, state, height, towerCoord, id);
+    populateTable(tOwner, lat, long, city, state, height, towerCoord, tid);
   }
 }
 
 // Make a row with table data and pushes it onto the table
-function populateTable(owner, lat, long, city, state, height, towerCoord, id) {
+function populateTable(owner, lat, long, city, state, height, towerCoord, tid) {
   // Create a new row and populate with tower data
   var newRow = $("<tr>").append(
     $("<td>").text(owner),
@@ -108,25 +109,13 @@ function populateTable(owner, lat, long, city, state, height, towerCoord, id) {
     $("<td>").text(city),
     $("<td>").text(state),
     $("<td>").text(height)
-  ).data("coordinates", towerCoord).attr("data-id", id);
+  ).data("coordinates", towerCoord).attr("data-id", tid);
 
   // Append the row to document table
   $("#tower-table > tbody").append(newRow);
 }
 
-
-//     // 
-//     var contentString = "<div><br><b>LICENSEE: </b>" + tOwner + "<br><b>LATITUDE: </b>" + lat +
-//       "<br><b>LONGITUDE: </b>" + long + "<br><b>CITY: </b>" + city + "<br><b>STATE: </b>" + state +
-//       "<br><b>HEIGHT: </b>" + height + " ft." + "</div>";
-
-//     // 
-//     //initMarker(towerCoord, contentString, towerId);
-//   }
-
-
-
-// Add a marker to the map at loc
+// Add a marker to the map at location
 function addMarker(location) {
   var marker = new google.maps.Marker({
     position: location,
@@ -138,7 +127,7 @@ function addMarker(location) {
   return marker;
 }
 
-// Sets the map on all markers in the array.
+// Sets the map on all markers in the array
 function setMapOnAll(map) {
   console.log("Markers Array:", markers);
   for (var i = 0; i < markers.length; i++) {
@@ -146,38 +135,23 @@ function setMapOnAll(map) {
   }
 }
 
-// Shows any markers currently in the array.
+// Shows any markers currently in the array
 function showMarkers() {
   setMapOnAll();
 }
 
-// Deletes all markers in the array by removing references to them.
+// Deletes all markers in the array by removing references to them
 function deleteMarkers() {
   clearMarkers();
   markers = [];
 }
 
-// Removes the markers from the map, but keeps them in the array.
+// Removes the markers from the map, but keeps them in the array
 function clearMarkers() {
   setMapOnAll(null);
 }
 
 
-/*
-// Created a function to create markers
-function initMarker(coords, contentString, towerId) {
-  var marker = new google.maps.Marker({
-    position: coords,
-    icon: iconBase,
-    map: map,
-    id: towerId,
-    title: 'Click for details'
-  });
-
-  // 
-  attachMessage(marker, contentString);
-}
-*/
 /*
 // Attaches an info window to a marker with the provided message
 function attachMessage(marker, content) {
@@ -300,24 +274,45 @@ $(function () {
       });
     }
   });
+
 });
 
 
 // When table row is clicked open the corresponding markers info window
-$("tbody").on("click", "tr", function (e) {
-  // 
-  //console.log("e: ", e);
-  var towerCoordinates = $(this).data("coordinates");
-  console.log("coordinates", towerCoordinates);
+$("tbody").on("click", "tr", function () {
+  // Get tower position in array
+  var towerID = $(this).attr("data-id");
   console.log("TowerID: ", $(this).attr("data-id"));
 
-  map.setCenter(towerCoordinates);
 
-  // markers[i]
+// ====
+  // Reset infowindow string to empty
+  infoString = "";
 
+  // for eveery cell in table
+  for (let i = 0; i < this.cells.length; i++) {
+    // Generate and add headers with cell data
+    infoString += "<b>" + $("thead > tr > th").eq(i).text() + ": </b>" + this.cells[i].innerHTML + "<br>";
+  }
+// ====
 
-  //console.log(markers[towerId]);
+ // ====
+  // Generate infowindow
+  infowindow = new google.maps.InfoWindow({
+    content: infoString
+  });
 
-  //infowindow.open(map, markers[towerId]);
+  // Open infowindow
+  infowindow.open(map, markers[towerID]);
 
-})
+  // Move map to selected tower coordinates
+  map.panTo(markers[towerID].position)
+// ====
+
+});
+
+//markers[towerID].addListener("click", function)
+
+// google.maps.event.addListener(marker, "click", function(event) {
+//   alert("clicked");
+// })
