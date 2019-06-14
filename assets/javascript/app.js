@@ -278,6 +278,8 @@ $(function () {
         $.when(getTowers(userCity)).then(function (data) {
           //
           console.log("Tower Objects: ", data.val());
+
+          
         });
         //var tempTowers = getTowers(userCity);
         //console.log("Towers: ", tempTowers);
