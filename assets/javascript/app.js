@@ -251,6 +251,9 @@ $(function () {
     // Error Checking
     if (isValid(userLat, userLong)) {
 
+      // Preloader overlay
+      $(".preloader-background").removeClass("hide");
+
       // Empty table
       $("tbody").empty();
 
@@ -287,6 +290,9 @@ $(function () {
           // Show map and table
           $("#map").removeClass("hide");
           $(".row").removeClass("hide");
+
+          // Remove preloader
+          $(".preloader-background").addClass("hide");
 
           console.log("At end of response: Markers Length: ", markers.length + '\n\n');
 
