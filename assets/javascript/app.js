@@ -4,7 +4,7 @@
 
 // Create a variable to reference the database.
 var database;
-var towerCoord = { lat: 33.9745, lng: -117.3374 }; // These coordinates getting called by google maps somehow. github bug #
+var towerCoord; //= { lat: 33.9745, lng: -117.3374 };
 var map;
 var towerCity;
 var iconBase = 'assets/images/tower-icon.png';
@@ -12,7 +12,6 @@ var iconUser = "assets/images/walking-icon.png";
 var userCoord;
 var markers = [];
 var infowindow;
-var infoString;
 
 
 // ========================
@@ -64,8 +63,6 @@ function getCity(url) {
 
 // Creates cell towers markers in maps in user coordinates
 function getTowers(userCity) {
-
-  console.log(userCity);
   // Query city equal to coordinate city
   return database.ref().orderByChild("LOCCITY").equalTo(userCity).once("value");
 }
@@ -73,7 +70,7 @@ function getTowers(userCity) {
 // Make towers
 function makeTowers(data) {
 
-  // Match towerId to array or markers
+  // Match towerId to array or markers initialize to 1, 0 is userIcon
   var i = 1;
 
   // Loop through all towers in response data
@@ -85,8 +82,9 @@ function makeTowers(data) {
     var city = data[tower].LOCCITY;
     var state = data[tower].LOCSTATE;
     var height = data[tower].SUPSTRUC;
+
+    // TowerID
     var tid = i;
-    console.log("tid", tid);
     i++;
 
     // Get coordinates for new cell tower
@@ -97,7 +95,6 @@ function makeTowers(data) {
 
     // Populate table
     populateTable(tOwner, lat, long, city, state, height, towerCoord, tid);
-    console.log("tid", tid);
   }
 }
 
@@ -130,7 +127,6 @@ function addMarker(location) {
 
 // Sets the map on all markers in the array
 function setMapOnAll(map) {
-  console.log("Markers Array:", markers);
   for (var i = 0; i < markers.length; i++) {
     markers[i].setMap(map);
   }
@@ -153,9 +149,9 @@ function clearMarkers() {
 }
 
 // Creates a inforwindow for the passed in marker
-function makeInfowindow(marker) {
+function makeInfowindow(marker, infoContent) {
   infowindow = new google.maps.InfoWindow({
-    content: infoString
+    content: infoContent
   });
 
   // Open infowindow
@@ -163,6 +159,24 @@ function makeInfowindow(marker) {
 
   // Move map to selected tower coordinates
   map.panTo(markers[marker].position)
+}
+
+// 
+function makeInfoString(towerID) {
+  // Variable to store infowindow content
+  var infoString = "";
+
+  // Gets the tower row
+  var row = $("tbody").find("[data-id='" + towerID + "']")[0];
+
+  // For every cell in table
+  for (let i = 0; i < row.cells.length; i++) {
+    // Generate and add headers with cell data
+    infoString += "<b>" + $("thead > tr > th").eq(i).text() + ": </b>" + $(row).find("td:eq(" + i + ")").text() + "<br>";
+  }
+
+  // Returns infowindow content
+  return infoString;
 }
 
 /*
@@ -229,7 +243,6 @@ $(function () {
 
   // Initializes map
   initMap(towerCoord);
-  console.log("On Document ready: ", markers.length);
 
   // Get user submit and runs core logic
   $("#submitButton").on("click", function (event) {
@@ -281,43 +294,28 @@ $(function () {
           $("#map").removeClass("hide");
           $(".row").removeClass("hide");
 
-          console.log("At end of response: ", markers.length + '\n\n');
+          console.log("At end of response: Markers Length: ", markers.length + '\n\n');
 
         });
       });
     }
   });
 
+  // When table row is clicked open the corresponding markers info window
+  $("tbody").on("click", "tr", function () {
+    // Get tower position in array
+    var towerID = $(this).attr("data-id");
+    //console.log("TowerID: ", $(this).attr("data-id"));
+
+    // Creates and returns infowindow content
+    var infoContent = makeInfoString(towerID);
+
+    // Generate infowindow
+    makeInfowindow(towerID, infoContent);
+  });
 });
 
 
-// When table row is clicked open the corresponding markers info window
-$("tbody").on("click", "tr", function () {
-  // Get tower position in array
-  var towerID = $(this).attr("data-id");
-  console.log("TowerID: ", $(this).attr("data-id"));
-
-
-  // ====
-  var row = $("tbody").find("[data-id='" + towerID + "']")[0]; //$("tbody > tr").eq(towerID-1)[0];
-  var cell = $(row).find("td:eq(" + 0 + ")").text(); //$(row > "td").child[0]; //.eq(0).text(); //  .eq(0).text();
-  console.log("Row: ", row);
-  console.log("Cell: ", cell);
-
-  // Reset infowindow string to empty
-  infoString = "";
-
-  // For every cell in table
-  for (let i = 0; i < this.cells.length; i++) {
-    // Generate and add headers with cell data
-    infoString += "<b>" + $("thead > tr > th").eq(i).text() + ": </b>" + this.cells[i].innerHTML + "<br>";
-  }
-  // ====
-
-
-  // Generate infowindow
-  makeInfowindow(towerID);
-});
 
 //markers[towerID].addListener("click", function)
 
