@@ -35,23 +35,12 @@ function initFirebase() {
 
 // Initializes map
 function initMap(location) {
-  // Unhide spinner 
-  //$(".preloader-background").removeClass("hide");
-
   // getting the div map and putting the google maps api there
   map = new google.maps.Map(document.getElementById('map'), {
     center: location,
     mapTypeId: 'terrain',
     zoom: 13
   });
-
-  // Added an event listener to when the tiles are loaded
-  //google.maps.event.addListenerOnce(map, 'tilesloaded', mapLoaded);
-
-  // 
-  // function mapLoaded() {
-  //   $(".preloader-background").addClass("hide");
-  // }
 }
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
@@ -125,12 +114,12 @@ function addMarker(location, tid) {
   // If more than 2 params are passed in add a listener
   if (tid) { //arguments.length >= 2) {
     marker.addListener("click", function () {
-      
-
       // Create a infowindow with the relavant content
       makeInfowindow(tid, makeInfoContent(tid));
 
-      
+      // Scroll tower in table to top of table
+      var element = $("[data-id=" + tid + "]")[0];
+      element.scrollIntoView({ block: "start", behavior: "smooth" });
     });
   }
 
@@ -168,7 +157,7 @@ function makeInfowindow(markerID, infoContent) {
   });
 
   // Closes the previous infowindow when a new one is opened
-  if(activeInfoWindow) {
+  if (activeInfoWindow) {
     activeInfoWindow.close();
   }
   // New infowindow is set to the current/avtive one
@@ -198,7 +187,6 @@ function makeInfoContent(towerID) {
   // Returns infowindow content
   return infoString;
 }
-
 
 // Checks if user input is a valid lat and long range
 function isValid(lat, long) {
