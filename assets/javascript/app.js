@@ -62,60 +62,68 @@ function getCity(url) {
 }
 
 // Creates cell towers markers in maps in user coordinates
-function makeTowers(userCity) {
+function getTowers(userCity) {
 
-  // Data in firebase database
-  database.ref().on("value", function (data) {
-
-    // Loops through dataset by each tower object
-    for (tower in data.val()) {
-
-      // Saves the location(city) of the tower to a variable
-      towerCity = data.val()[tower].LOCCITY.toLowerCase();
-
-      // If the cell tower's city is the same city as the user entered coordinates
-      if (towerCity === userCity) {
-
-        // Save cell tower data into variables
-        var tOwner = data.val()[tower].LICENSEE;
-        var lat = parseFloat(data.val()[tower].LAT_DMS);
-        var long = parseFloat(data.val()[tower].LON_DMS);
-        var city = data.val()[tower].LOCCITY;
-        var state = data.val()[tower].LOCSTATE;
-        var height = data.val()[tower].SUPSTRUC;
-        var towerId = tower;
-
-        // Get coordinates for new cell tower
-        towerCoord = { lat: lat, lng: long };
-
-        // Create a new row and populate with tower data
-        var newRow = $("<tr>").append(
-          $("<td>").text(tOwner),
-          $("<td>").text(lat + ", " + long),
-          $("<td>").text(city),
-          $("<td>").text(state),
-          $("<td>").text(height)
-        ).attr("data-id", towerId);
-
-        // Append the row to document table
-        $("#tower-table > tbody").append(newRow);
-
-        // Creates and adds marker to the array
-        markers.push(addMarker(towerCoord));
-        console.log(markers.length);
-      }
-
-      // 
-      var contentString = "<div><br><b>LICENSEE: </b>" + tOwner + "<br><b>LATITUDE: </b>" + lat +
-        "<br><b>LONGITUDE: </b>" + long + "<br><b>CITY: </b>" + city + "<br><b>STATE: </b>" + state +
-        "<br><b>HEIGHT: </b>" + height + " ft." + "</div>";
-
-      // 
-      //initMarker(towerCoord, contentString, towerId);
-
-    }
-  });
+  console.log(userCity);
+  // Query city equal to coordinate city
+  return database.ref().orderByChild("LOCCITY").equalTo(userCity).once("value");
 }
+
+// // Data in firebase database
+// //database.ref().on("value", function (data) {
+// database.ref().once("value").then(function (data) {
+//   // Loops through dataset by each tower object
+//   for (tower in data.val()) {
+
+//     // Saves the location(city) of the tower to a variable
+//     towerCity = data.val()[tower].LOCCITY.toLowerCase();
+
+//     // If the cell tower's city is the same city as the user entered coordinates
+//     if (towerCity === userCity) {
+
+//       // Save cell tower data into variables
+//       var tOwner = data.val()[tower].LICENSEE;
+//       var lat = parseFloat(data.val()[tower].LAT_DMS);
+//       var long = parseFloat(data.val()[tower].LON_DMS);
+//       var city = data.val()[tower].LOCCITY;
+//       var state = data.val()[tower].LOCSTATE;
+//       var height = data.val()[tower].SUPSTRUC;
+//       var towerId = tower;
+
+//       // Get coordinates for new cell tower
+//       towerCoord = { lat: lat, lng: long };
+
+//       // Create a new row and populate with tower data
+//       var newRow = $("<tr>").append(
+//         $("<td>").text(tOwner),
+//         $("<td>").text(lat + ", " + long),
+//         $("<td>").text(city),
+//         $("<td>").text(state),
+//         $("<td>").text(height)
+//       ).attr("data-id", towerId);
+
+//       // Append the row to document table
+//       $("#tower-table > tbody").append(newRow);
+
+//       // Creates and adds marker to the array
+//       markers.push(addMarker(towerCoord));
+//       console.log(markers.length);
+//     }
+
+//     // 
+//     var contentString = "<div><br><b>LICENSEE: </b>" + tOwner + "<br><b>LATITUDE: </b>" + lat +
+//       "<br><b>LONGITUDE: </b>" + long + "<br><b>CITY: </b>" + city + "<br><b>STATE: </b>" + state +
+//       "<br><b>HEIGHT: </b>" + height + " ft." + "</div>";
+
+//     // 
+//     //initMarker(towerCoord, contentString, towerId);
+//   }
+
+
+
+
+//});
+
 
 // Add a marker to the map at loc
 function addMarker(location) {
@@ -264,9 +272,17 @@ $(function () {
         //deleteMarkers();
 
         // Sets user's city equal to the city containing coodinates
-        var userCity = response.address.City.toLowerCase();
+        var userCity = response.address.City; //.toLowerCase();
+        //console.log(userCity);
 
-        makeTowers(userCity);
+        $.when(getTowers(userCity)).then(function (data) {
+          //
+          console.log("Tower Objects: ", data.val());
+        });
+        //var tempTowers = getTowers(userCity);
+        //console.log("Towers: ", tempTowers);
+
+
 
         // Adds a marker for the user
         markers.push(addMarker(userCoord).setIcon(iconUser));
