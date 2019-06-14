@@ -22,7 +22,6 @@ $(document).ready(function () {
   var iconBase = 'assets/images/tower-icon.png';
   var iconPerson = "assets/images/walking-icon.png"
   var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
-
   var markers = [];
   // var infowindow;
   // ========================
@@ -88,6 +87,7 @@ $(document).ready(function () {
 
           // Saving cell tower data into variables
           var tOwner = data.val()[tower].LICENSEE;
+          // console.log(tOwner);
           var coords = data.val()[tower].LAT_DMS + ", " + data.val()[tower].LON_DMS;
           var lat = data.val()[tower].LAT_DMS;
           var long = data.val()[tower].LON_DMS;
@@ -112,9 +112,9 @@ $(document).ready(function () {
         }
 
         // 
-        var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat +
-          "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + city + "<li><b>STATE:</b></li>" + state +
-          "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>" ;
+        var contentString = "<div>" + "<br>" + "<b>LICENSEE: </b>" + tOwner + "<br>" + "<b>LATITUDE: </b>" + lat +
+        "<br>" + "<b>LONGITUDE: </b>" + long + "<br>" + "<b>CITY: </b>" + city + "<br>" + "<b>STATE: </b>" + state +
+         "<br>" + "<b>HEIGHT: </b>" + height + " ft." + "</div>";
 
 
         // 
@@ -133,6 +133,7 @@ $(document).ready(function () {
   }
   // Created a function to create markers
   function initMarker(coords, contentString) {
+    //console.log(contentString);
     var marker = new google.maps.Marker({
       position: coords,
       icon: iconBase,
@@ -153,11 +154,18 @@ $(document).ready(function () {
     marker.addListener('click', function (event) {
       // open the info window on top of marker
       infowindow.open(map, marker);
-      
 
+      var cur_marker = marker.close;
+      var new_marker = marker.open;
+      //if marker.open = false on click open info window
       if (!marker.open) {
         infowindow.open(map, marker);
         marker.open = true;
+      //else if cur_marker(closed) is true
+      } else if (cur_marker) {
+        //cur_marker = closed
+        //cur_marker = true;
+        new_marker = true;
       }
       else {
         infowindow.close();
@@ -195,8 +203,6 @@ $(document).ready(function () {
     }
     return true;
   }
-
-
 
   // ========================
   // Main 
@@ -251,7 +257,6 @@ $(document).ready(function () {
       return marker.id === towerId;
     })    
     infowindow.open(map, markers[selectedMarker]);
-
 
   })
 });

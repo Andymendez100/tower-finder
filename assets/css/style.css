@@ -105,7 +105,6 @@ table {
     table-layout: fixed;
   }
 }
-
 #table-col{
   height: 500px;
   overflow: scroll;
