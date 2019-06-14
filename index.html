@@ -57,8 +57,8 @@
                     </div>
                     <!-- Submit Button-->
                     <div class="col s12 xl2">
-                        <button id="submitButton" class="btn-large blue darken-4 waves-effect waves-orange" type="submit"
-                            name="action">Submit
+                        <button id="submitButton" class="btn-large blue darken-4 waves-effect waves-orange"
+                            type="submit" name="action">Submit
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -91,11 +91,27 @@
         <!-- App Infomation -->
         <div class="row">
             <div class="col">
-                <div id="appDescription"></div>
+                <div id="appDescription">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title center-align">Description</span>
+                            <p>This application takes the latitude and longitude that you have entered and finds all the cell
+                                towers within that city, then the application displays a map that shows your current location as well as creating a
+                                marker for all cell towers within the city.
+                                It will create a table as well as allowing you to click on the marker of any tower, and
+                                display the following information:
+                                <br>
+                                <b>The owner of the tower <br>
+                                The coordinates of the tower <br>
+                                City in which the tower is located <br>
+                                State in which the tower is located <br>
+                                Height of the tower</b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col">
-                <div id="appDirections"></div>
-            </div>
+
         </div>
 
     </main>
