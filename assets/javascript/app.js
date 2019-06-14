@@ -117,9 +117,9 @@ function addMarker(location, tid) {
       // Create a infowindow with the relavant content
       makeInfowindow(tid, makeInfoContent(tid));
 
-      // Scroll tower in table to top of table
+      // Scroll to tower in table
       var element = $("[data-id=" + tid + "]")[0];
-      element.scrollIntoView({ block: "start", behavior: "smooth" });
+      element.scrollIntoView({ block: "nearest", inline:"start", behavior: "smooth" });
     });
   }
 
