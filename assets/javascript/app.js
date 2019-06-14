@@ -226,7 +226,18 @@ $(function () {
   initMap({ lat: 33.9745, lng: -117.3374 });
 
   // Prevent right click context menu on map
-  
+  window.onload = (function () {
+    document.addEventListener("mouseup", function (evt) {
+      console.log(evt)
+      evt.preventDefault();
+      evt.stopPropagation();
+    });
+    document.addEventListener("contextmenu", function (evt) {
+      console.log(evt);
+      evt.preventDefault();
+      evt.stopPropagation();
+    });
+  })();
 
   // Get user submit and runs core logic
   google.maps.event.addListener(map, "rightclick", function (event) {
