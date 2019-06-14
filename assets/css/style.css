@@ -38,6 +38,7 @@ html, body {
   top: 0;
   transition: opacity .2s;
   z-index: -1;
+
 }
 
 /* Spinner */
@@ -108,4 +109,7 @@ table {
 #table-col{
   height: 500px;
   overflow: scroll;
+}
+#appDescription {
+  box-shadow: 5px 10px 5px grey;
 }

@@ -160,19 +160,15 @@ $(document).ready(function () {
       // open the info window on top of marker
       infowindow.open(map, marker);
 
-      
+      var cur_marker = marker.close;
+      var new_marker = marker.open;
+
       if (!marker.open) {
         infowindow.open(map, marker);
         marker.open = true;
       //else if cur_marker(closed) is true
       } else if (cur_marker) {
-        //cur_marker = closed
-        //cur_marker = true;
-        new_marker = true;
-      }
-       else if (cur_marker) {
-        cur_marker = true;
-        new_marker = true;
+        
       }
       else {
         infowindow.close();
