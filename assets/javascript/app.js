@@ -10,8 +10,8 @@ var towerCity;
 var iconBase = 'assets/images/tower-icon.png';
 var iconUser = "assets/images/walking-icon.png";
 var userCoord;
-//var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
 var markers = [];
+//var infoTemplate = '<div><h4>%Title</h4>%Tel<br><br>%Add</div>';
 
 
 // ========================
@@ -69,46 +69,51 @@ function getTowers(userCity) {
   return database.ref().orderByChild("LOCCITY").equalTo(userCity).once("value");
 }
 
-// // Data in firebase database
-// //database.ref().on("value", function (data) {
-// database.ref().once("value").then(function (data) {
-//   // Loops through dataset by each tower object
-//   for (tower in data.val()) {
+// Make towers
+function makeTowers(data) {
 
-//     // Saves the location(city) of the tower to a variable
-//     towerCity = data.val()[tower].LOCCITY.toLowerCase();
+  // Match towerId to array or markers
+  var i = 0;
+  
+  //
+  for (tower in data) {
+    // Save cell tower data into variables
+    var tOwner = data[tower].LICENSEE;
+    var lat = parseFloat(data[tower].LAT_DMS);
+    var long = parseFloat(data[tower].LON_DMS);
+    var city = data[tower].LOCCITY;
+    var state = data[tower].LOCSTATE;
+    var height = data[tower].SUPSTRUC;
+    var id = i;
+    //console.log("id", id);
+    i++;
 
-//     // If the cell tower's city is the same city as the user entered coordinates
-//     if (towerCity === userCity) {
+    // Get coordinates for new cell tower
+    towerCoord = { lat: lat, lng: long };
 
-//       // Save cell tower data into variables
-//       var tOwner = data.val()[tower].LICENSEE;
-//       var lat = parseFloat(data.val()[tower].LAT_DMS);
-//       var long = parseFloat(data.val()[tower].LON_DMS);
-//       var city = data.val()[tower].LOCCITY;
-//       var state = data.val()[tower].LOCSTATE;
-//       var height = data.val()[tower].SUPSTRUC;
-//       var towerId = tower;
+    // Add tower marker to the array
+    markers.push(addMarker(towerCoord));
 
-//       // Get coordinates for new cell tower
-//       towerCoord = { lat: lat, lng: long };
+    // Populate table
+    populateTable(tOwner, lat, long, city, state, height, towerCoord, id);
+  }
+}
 
-//       // Create a new row and populate with tower data
-//       var newRow = $("<tr>").append(
-//         $("<td>").text(tOwner),
-//         $("<td>").text(lat + ", " + long),
-//         $("<td>").text(city),
-//         $("<td>").text(state),
-//         $("<td>").text(height)
-//       ).attr("data-id", towerId);
+// Make a row with table data and pushes it onto the table
+function populateTable(owner, lat, long, city, state, height, towerCoord, id) {
+  // Create a new row and populate with tower data
+  var newRow = $("<tr>").append(
+    $("<td>").text(owner),
+    $("<td>").text(lat + ", " + long),
+    $("<td>").text(city),
+    $("<td>").text(state),
+    $("<td>").text(height)
+  ).data("coordinates", towerCoord).attr("data-id", id);
 
-//       // Append the row to document table
-//       $("#tower-table > tbody").append(newRow);
+  // Append the row to document table
+  $("#tower-table > tbody").append(newRow);
+}
 
-//       // Creates and adds marker to the array
-//       markers.push(addMarker(towerCoord));
-//       console.log(markers.length);
-//     }
 
 //     // 
 //     var contentString = "<div><br><b>LICENSEE: </b>" + tOwner + "<br><b>LATITUDE: </b>" + lat +
@@ -119,10 +124,6 @@ function getTowers(userCity) {
 //     //initMarker(towerCoord, contentString, towerId);
 //   }
 
-
-
-
-//});
 
 
 // Add a marker to the map at loc
@@ -139,16 +140,15 @@ function addMarker(location) {
 
 // Sets the map on all markers in the array.
 function setMapOnAll(map) {
+  console.log("Markers Array:", markers);
   for (var i = 0; i < markers.length; i++) {
-    console.log("Marker: ", markers[i]);
-    console.log("Map: ", map);
     markers[i].setMap(map);
   }
 }
 
 // Shows any markers currently in the array.
 function showMarkers() {
-  setMapOnAll(map);
+  setMapOnAll();
 }
 
 // Deletes all markers in the array by removing references to them.
@@ -261,59 +261,62 @@ $(function () {
       // Empty table
       $("tbody").empty();
 
+      // Delete markers
+      deleteMarkers();
+
       // Url for arcgis api call
       var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
 
-
-      // Gets the city of user inputed coordinates
+      // Get the city in user inputed coordinates
       $.when(getCity(queryURL)).then(function (response) {
-
-        // Delete markers
-        //deleteMarkers();
 
         // Sets user's city equal to the city containing coodinates
         var userCity = response.address.City; //.toLowerCase();
-        //console.log(userCity);
+        console.log(userCity);
 
+        // Get towers that match user city from firebase database
         $.when(getTowers(userCity)).then(function (data) {
-          //
-          console.log("Tower Objects: ", data.val());
+          // Towers equal to response
+          var towers = data.val();
 
-          
+          // Adds a marker for the user
+          var userMarker = addMarker(userCoord);
+          userMarker.setIcon(iconUser);
+          markers.push(userMarker);
+
+          // Centers map on user
+          map.setCenter(userCoord);
+
+          // Make towers
+          makeTowers(towers);
+
+          // Show map and table
+          $("#map").removeClass("hide");
+          $(".row").removeClass("hide");
+
+          console.log("At end of response: ", markers.length + '\n\n');
+
         });
-        //var tempTowers = getTowers(userCity);
-        //console.log("Towers: ", tempTowers);
-
-
-
-        // Adds a marker for the user
-        markers.push(addMarker(userCoord).setIcon(iconUser));
-        // Centers map on user
-        map.setCenter(userCoord);
-
-        // Show map and table
-        $("#map").removeClass("hide");
-        $(".row").removeClass("hide");
-
-        console.log("At end of response: ", markers.length);
-
       });
-      console.log("Outside when: ", markers.length);
     }
-
-    console.log("outside if loop", markers.length);
   });
 });
-
 
 
 // When table row is clicked open the corresponding markers info window
 $("tbody").on("click", "tr", function (e) {
   // 
-  var towerId = $(this).attr("data-id");
-  console.log("TowerID", towerId);
+  //console.log("e: ", e);
+  var towerCoordinates = $(this).data("coordinates");
+  console.log("coordinates", towerCoordinates);
+  console.log("TowerID: ", $(this).attr("data-id"));
 
-  console.log(markers[towerId]);
+  map.setCenter(towerCoordinates);
+
+  // markers[i]
+
+
+  //console.log(markers[towerId]);
 
   //infowindow.open(map, markers[towerId]);
 
