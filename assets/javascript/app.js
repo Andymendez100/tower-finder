@@ -22,9 +22,9 @@ $(document).ready(function () {
   var iconBase = 'assets/images/tower-icon.png';
   var iconPerson = "assets/images/walking-icon.png"
   var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=-117.3374,33.9745";
-
   var markers = [];
-  // var infowindow;
+  var curr_window;
+  var window_arr = [];
   // ========================
   // Functions
   // ========================
@@ -71,10 +71,8 @@ $(document).ready(function () {
     // Goes into our database
     database.ref().on("value", function (data) {
 
-
-
-
       // Creates var tower for arrays in database
+      var index = 0;
       for (tower in data.val()) {
 
         // Saves city loc in var
@@ -95,8 +93,6 @@ $(document).ready(function () {
           var state = data.val()[tower].LOCSTATE;
           var height = data.val()[tower].SUPSTRUC;
           var towerId = tower;
-          var tableId = tower;
-
           // Create a new row
           var newRow = $("<tr>").append(
             $("<td>").text(tOwner),
@@ -104,26 +100,31 @@ $(document).ready(function () {
             $("<td>").text(city),
             $("<td>").text(state),
             $("<td>").text(height)
-          ).attr("data-id", towerId).attr("coords", coords);
+          ).attr("data-id", towerId).attr("coords", coords).attr('index', index);
+            
+          // increasing index by 1
+          index++;
 
 
           // Append the row to table
           $("#tower-table > tbody").append(newRow);
         }
-
-        // 
-        var contentString = "<ul style='list-style: none;'><li><b>LICENSEE:</b></li>" + tOwner + "<li><b>LATITUDE:</b></li>" + lat +
-          "<li><b>LONGITUDE:</b></li>" + long + "<li><b>CITY:</b></li>" + city + "<li><b>STATE:</b></li>" + state +
-          "<li><b>HEIGHT:</b></li>" + height + " ft." + "</ul>" ;
-
-
-        // 
+        if(lat == undefined){
+          // just go to the next interation, do nothing (google this later)
+          continue;
+        }
+        // What is going to be our content inside our info window
+        var contentString = "<div>" + "<br>" + "<b>LICENSEE: </b>" + tOwner + "<br>" + "<b>LATITUDE: </b>" + lat +
+        "<br>" + "<b>LONGITUDE: </b>" + long + "<br>" + "<b>CITY: </b>" + city + "<br>" + "<b>STATE: </b>" + state +
+         "<br>" + "<b>HEIGHT: </b>" + height + " ft." + "</div>";
+   
+        // calling init marker function
         initMarker(towerCoord, contentString);
       }
     });
   }
 
-  // 
+  // function to create the user lat and long as a marker
   function userMarker(lat, long) {
     var marker = new google.maps.Marker({
       position: { lat: lat, lng: long },
@@ -144,10 +145,13 @@ $(document).ready(function () {
     markers.push(marker)
 
     // Info window to show information about towers
-    infowindow = new google.maps.InfoWindow({
+    var infowindow = new google.maps.InfoWindow({
       content: contentString,
       maxWidth: 200
     });
+
+    window_arr.push(infowindow);
+
 
     // Listening for a click on the marker
     marker.addListener('click', function (event) {
@@ -155,9 +159,14 @@ $(document).ready(function () {
       infowindow.open(map, marker);
       
 
+      
       if (!marker.open) {
         infowindow.open(map, marker);
         marker.open = true;
+      }
+       else if (cur_marker) {
+        cur_marker = true;
+        new_marker = true;
       }
       else {
         infowindow.close();
@@ -167,6 +176,7 @@ $(document).ready(function () {
         infowindow.close();
         marker.open = false;
       });
+
     });
 
   }
@@ -179,7 +189,6 @@ $(document).ready(function () {
     if (lat < -90 || lat > 90) {
       // maybe add a modal here?
       return false;
-      console.log("working");
     }
 
     // Checks longitude range
@@ -217,6 +226,7 @@ $(document).ready(function () {
 
       // Error Checking
       if (isValid(userLat, userLong)) {
+        $("#appDescription").addClass("hide");
 
         // Refresh map
         initMap();
@@ -243,15 +253,25 @@ $(document).ready(function () {
     });
   });
 
+
+
   // Whenever the table is clicked it shows the markers info window
   $("tbody").on("click", "tr", function (e) {
+    // Putting the correct id to each table
     var towerId = $(this).attr("data-id");
 
+    // Find the marker with the same id
     var selectedMarker = markers.findIndex(function(marker) {
       return marker.id === towerId;
-    })    
-    infowindow.open(map, markers[selectedMarker]);
+    })
 
+    // before we open the NEW window, we close the CURRENT window
+    if(curr_window !== undefined){
+      curr_window.close();
+    } 
+    // Open the info window on the marker with the same id as  the table row;
 
+    window_arr[$(this).attr('index')].open(map, markers[selectedMarker])
+    curr_window =  window_arr[$(this).attr('index')];
   })
 });
