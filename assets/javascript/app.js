@@ -214,6 +214,13 @@ function isValid(lat, long) {
   return true;
 }
 
+// Invalid input message
+function inValidInput() {
+  var elem = document.querySelector('.modal');
+  var instance = M.Modal.init(elem);
+  instance.open();
+}
+
 
 // ========================
 // Main 
@@ -271,7 +278,7 @@ $(function () {
       $.when(getCity(queryURL)).then(function (response) {
 
         // Sets user's city equal to the city containing coodinates
-        var userCity = response.address.City; //.toLowerCase();
+        var userCity = response.address.City;
 
         // Get towers that match user city from firebase database
         $.when(getTowers(userCity)).then(function (data) {
@@ -310,6 +317,9 @@ $(function () {
 
       // Preloader overlay
       $(".preloader-background").removeClass("hide");
+
+      // Remove instruction button pulsing effect
+      $('#menu').removeClass("pulse");
 
       // Empty table
       $("tbody").empty();
@@ -367,7 +377,7 @@ $(function () {
     makeInfowindow(towerID, infoContent);
   });
 
-  // Open close instructions tap target when clicked
+  // Open close instructions tap target from feature discovery when clicked
   $("#menu").on("click", function () {
     $('.tap-target').tapTarget('open');
     // Remove instruction button pulsing effect
@@ -377,11 +387,3 @@ $(function () {
 
 });
 
-
-
-
-function inValidInput() {
-  var elem = document.querySelector('.modal');
-  var instance = M.Modal.init(elem);
-  instance.open();
-}
