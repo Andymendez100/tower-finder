@@ -360,7 +360,6 @@ $(function () {
           makeTowers(towers);
 
           // Show map and table
-          //$("#map").removeClass("hide");
           $(".row").removeClass("hide");
 
           // Remove preloader
@@ -444,9 +443,8 @@ $("#submitButton").on("click", function (event) {
         makeTowers(towers);
 
         // Show map and table
-        $("#map").removeClass("hide");
         $(".row").removeClass("hide");
-        $(".card").addClass("hide");
+       
         // Remove preloader
         $(".preloader-background").addClass("hide");
 
