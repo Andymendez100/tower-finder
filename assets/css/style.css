@@ -1,6 +1,6 @@
 /* Height of main content 100 view height */
 .container {
-  height: 100vh;
+  height: 95vh;
 }
 
 /* Always set the map height explicitly to define the size of the div
