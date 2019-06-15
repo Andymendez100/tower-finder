@@ -1,6 +1,6 @@
 /* Height of main content 100 view height */
 .container {
-  height: 90vh;
+  height: 85vh;
   margin-top: 5vh;
   margin-bottom: 5vh;
 }
@@ -157,6 +157,9 @@ table {
 
 /* Adds scrollable tbody on screens larger then 992 */
 @media only screen and (min-width: 992px) {
+	.table {
+		background-color: rgba(0, 26, 175, 0.5);
+	}
   tbody {
     display: block;
     height: 170px;
