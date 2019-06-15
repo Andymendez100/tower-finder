@@ -106,6 +106,29 @@ table {
   background: rgba(68, 138, 255, .7); 
 }
 
+/* Feature discovery  */
+.tapmenu{
+  top: 10px;
+  position: fixed;
+  right: 10px;
+  z-index: 99;
+}
+.tap-target{
+  background-color: rgba(3, 40, 121, 0.9);
+  color: white;
+}
+.tap-target-wrapper.open .tap-target {
+  transform: scale(1.75);
+}
+
+/* Changes wrapper for feature discovery on small screens */
+@media only screen and (max-width: 600px) {
+  .tap-target, .tap-target-wrapper {
+    height: 95%;
+    border-radius: 25%;
+  }
+}
+
 /* Adds scrollable tbody on screens larger then 992 */
 @media only screen and (min-width: 992px) {
   tbody {
@@ -120,17 +143,9 @@ table {
   }
 }
 
-/* FeatureDiscovery  */
-.tapmenu{
-  top: 10px;
-  position: fixed;
-  right: 10px;
-  z-index: 99;
-}
-.tap-target{
-  background-color: rgba(3, 40, 121, 0.945);
-  color: white;
-}
+
+
+/*  */
 #modal1{
   width: 500px;
 }
