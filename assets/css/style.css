@@ -1,7 +1,6 @@
 /* Height of main content 100 view height */
 .container {
   height: 90vh;
-  background-color: #fff;
   margin-top: 5vh;
   margin-bottom: 5vh;
 }
@@ -22,17 +21,22 @@ body {
   color: black;
 }
 .row{
-  margin-bottom: 0px;
+  margin-bottom: 10x;
+  
 }
 form {
-  margin-top: 10px;
+  padding-top: 10px;
+  background-color: white !important;
 }
 /* height: calc(100% - 50px); */
 footer {
   margin-top: -20px;
   background-color: rgba(38, 0, 255, 0.85);
   font-weight: bolder;
-  color: white;
+  color: rgba(238, 238, 238, 0.486);
+}
+label{
+	margin-top: 10px;
 }
 
 /* Change btn to fill row */
@@ -44,6 +48,7 @@ footer {
 .btn-large {
   overflow: hidden;
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 .btn-large:hover::before {
   opacity:1;
@@ -89,7 +94,8 @@ footer {
 
 /* Table */
 table {
-  color: black;
+  color: white;
+  background-color: rgba(0, 26, 175, 0.5);
   margin-top: 2.5%;
   border-style: groove;
 }
