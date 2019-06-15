@@ -107,7 +107,7 @@ table {
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(13, 71, 161); 
+  background: white;
   border-radius: 10px;
 }
 /* Handle on hover */
