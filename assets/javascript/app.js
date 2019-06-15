@@ -283,10 +283,6 @@ $(function () {
           userMarker.setIcon(iconUser);
           markers.push(userMarker);
 
-          // Centers map on user
-          //map.setCenter(userCoord);
-          map.setZoom(13);
-
           // Make towers
           makeTowers(towers);
 
