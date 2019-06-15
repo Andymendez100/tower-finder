@@ -193,28 +193,25 @@ function isValid(lat, long) {
 
   // Checks latitude range
   if (lat < -90 || lat > 90) {
-    // maybe add a modal here?
     inValidInput();
     return false;
   }
 
   // Checks longitude range
   else if (long < -180 || long > 180) {
-    // maybe add a modal here?
     inValidInput();
     return false;
   }
 
   // Checks if input is empty
   else if (isNaN(lat) || isNaN(long)) {
-    // maybe add a modal here
     inValidInput();
     return false;
   }
   return true;
 }
 
-// Invalid input message
+// Setup and display invalid input message
 function inValidInput() {
   var elem = document.querySelector('.modal');
   var instance = M.Modal.init(elem);
@@ -229,7 +226,7 @@ function inValidInput() {
 // Shorthand document ready
 $(function () {
 
-  // Enable instructions funtionaility for materialize
+  // Enable trigger funtionaility for materialize components
   $('.tap-target').tapTarget();
   $('.tooltipped').tooltip();
 
