@@ -105,6 +105,9 @@ table {
     table-layout: fixed;
   }
 }
+footer{
+  clear: both;
+}
 
 /* FeatureDiscovery  */
 .tapmenu{
