@@ -194,17 +194,20 @@ function isValid(lat, long) {
   // Checks latitude range
   if (lat < -90 || lat > 90) {
     // maybe add a modal here?
+    inValidInput();
     return false;
   }
 
   // Checks longitude range
   else if (long < -180 || long > 180) {
     // maybe add a modal here?
+    inValidInput();
     return false;
   }
 
   // Checks if input is empty
   else if (isNaN(lat) || isNaN(long)) {
+    inValidInput();
     // maybe add a modal here
     return false;
   }
@@ -302,6 +305,68 @@ $(function () {
       });
     }
   });
+  $("#submitButton").on("click", function (event) {
+
+    // Prevents default form actions
+    event.preventDefault();
+
+    // Get user coordinates
+    var userLat = parseFloat($("#latInput").val());
+    var userLong = parseFloat($("#longInput").val());
+    userCoord = { lat: userLat, lng: userLong };
+
+    // Error Checking
+    if (isValid(userLat, userLong)) {
+
+      // Preloader overlay
+      $(".preloader-background").removeClass("hide");
+
+      // Empty table
+      $("tbody").empty();
+
+      // Delete markers
+      deleteMarkers();
+
+      // Url for arcgis api call
+      var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
+
+      // Get the city in user inputed coordinates
+      $.when(getCity(queryURL)).then(function (response) {
+
+        // Sets user's city equal to the city containing coodinates
+        var userCity = response.address.City; //.toLowerCase();
+        console.log(userCity);
+
+        // Get towers that match user city from firebase database
+        $.when(getTowers(userCity)).then(function (data) {
+          // Towers equal to response
+          var towers = data.val();
+
+          // Adds a marker for the user
+          var userMarker = addMarker(userCoord);
+          userMarker.setIcon(iconUser);
+          markers.push(userMarker);
+
+          // Centers map on user
+          map.setCenter(userCoord);
+          map.setZoom(13);
+
+          // Make towers
+          makeTowers(towers);
+
+          // Show map and table
+          //$("#map").removeClass("hide");
+          $(".row").removeClass("hide");
+
+          // Remove preloader
+          $(".preloader-background").addClass("hide");
+
+          console.log("At end of response: Markers Length: ", markers.length + '\n\n');
+
+        });
+      });
+    }
+  });
 
   // When table row is clicked open the corresponding markers info window
   $("tbody").on("click", "tr", function () {
@@ -316,4 +381,8 @@ $(function () {
     makeInfowindow(towerID, infoContent);
   });
 });
-
+function inValidInput(){
+var elem= document.querySelector('.modal');
+var instance = M.Modal.init(elem);
+instance.open();
+}

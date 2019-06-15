@@ -105,3 +105,12 @@ table {
     table-layout: fixed;
   }
 }
+.card-content {
+  padding: 10px;
+  margin-top: 30px;
+  box-shadow: 5px 10px 5px grey;
+}
+#modal-row {
+  width: 50%;
+  height: 50%;
+}
