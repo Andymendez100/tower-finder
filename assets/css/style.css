@@ -131,3 +131,6 @@ table {
   background-color: rgba(3, 40, 121, 0.945);
   color: white;
 }
+#modal1{
+  width: 500px;
+}
