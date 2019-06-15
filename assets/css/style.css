@@ -145,8 +145,8 @@ table {
 /* Changes wrapper for feature discovery on small screens */
 @media only screen and (max-width: 600px) {
   .tap-target, .tap-target-wrapper {
-    height: 95%;
-    border-radius: 25%;
+    height: 98%;
+    border-radius: 15%;
   }
 }
 
