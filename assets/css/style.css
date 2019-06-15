@@ -106,20 +106,15 @@ table {
   }
 }
 
-#table-col{
-  height: 500px;
-  overflow: scroll;
+/* FeatureDiscovery  */
+.tapmenu{
+  top: 10px;
+  position: fixed;
+  right: 10px;
+  z-index: 99;
 }
-#appDescription{
-  box-shadow: 5px 10px 5px grey; 
-}
-footer{
-  clear:both;
-}
-.selected{
-  background-color: yellow;
-}
-. {
-  margin: 50%;
-  height: 50%;
+
+.tap-target{
+  background-color: rgba(3, 40, 121, 0.945);
+  color: white;
 }
