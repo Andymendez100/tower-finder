@@ -231,7 +231,7 @@ a{
 }
 .slideshow:after {
     content: '';
-    background: transparent url(../images/pattsern.png) repeat top left;
+    background: transparent url() repeat top left;
 }
 .slideshow li span {
     width: 100%;
