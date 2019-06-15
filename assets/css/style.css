@@ -1,6 +1,6 @@
 /* Height of main content 100 view height */
 .container {
-  height: 95vh;
+  height: 100vh;
 }
 
 /* Always set the map height explicitly to define the size of the div
@@ -9,10 +9,23 @@
   height: 50%;
 }
 /* Optional: Makes the sample page fill the window. */
-html, body {
+html {
+  height: 100vh;
+}
+body {
   height: 100vh;
   margin: 0;
   padding: 0;
+}
+.row{
+  margin-bottom: 0px;
+}
+form {
+  margin-top: 10px;
+}
+/* height: calc(100% - 50px); */
+footer {
+  margin-top: -20px;
 }
 
 /* Change btn to fill row */
@@ -23,6 +36,7 @@ html, body {
 /* Button hover effect */
 .btn-large {
   overflow: hidden;
+  margin-bottom: 10px;
 }
 .btn-large:hover::before {
   opacity:1;
@@ -105,9 +119,6 @@ table {
     table-layout: fixed;
   }
 }
-footer{
-  clear: both;
-}
 
 /* FeatureDiscovery  */
 .tapmenu{
@@ -116,7 +127,6 @@ footer{
   right: 10px;
   z-index: 99;
 }
-
 .tap-target{
   background-color: rgba(3, 40, 121, 0.945);
   color: white;
