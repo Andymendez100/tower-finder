@@ -122,7 +122,8 @@ footer{
   color: white;
 }
 #modal1{
-  color: rgb(3, 40, 121);
+  color: white;
+  background-color: rgba(3, 40, 121, 0.825);
   width: 500px;
   border-radius: 4px;
   top: 60%;
