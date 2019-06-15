@@ -1,6 +1,6 @@
 /* Height of main content 100 view height */
 .container {
-  height: 100vh;
+  height: 95vh;
 }
 
 /* Always set the map height explicitly to define the size of the div
@@ -106,12 +106,18 @@ table {
     table-layout: fixed;
   }
 }
+<<<<<<< HEAD
 #table-col{
   height: 500px;
   overflow: scroll;
 }
 #appDescription {
   box-shadow: 5px 10px 5px grey;
+=======
+footer{
+  clear: both;
+}
+>>>>>>> 7c7a5a535487946eb58669a347a71abb9b493082
 
 /* FeatureDiscovery  */
 .tapmenu{
@@ -124,4 +130,7 @@ table {
 .tap-target{
   background-color: rgba(3, 40, 121, 0.945);
   color: white;
+}
+#modal1{
+  width: 500px;
 }
