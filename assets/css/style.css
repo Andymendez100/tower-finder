@@ -231,7 +231,7 @@ a{
 }
 .slideshow:after {
     content: '';
-    background: transparent url(../images/pattern.png) repeat top left;
+    background: transparent url(../images/pattsern.png) repeat top left;
 }
 .slideshow li span {
     width: 100%;
@@ -274,9 +274,9 @@ a{
   line-height: 200px;
 	color: rgba(255,255,255, 0.8);
 }
-.slideshow li:nth-child(1) span { background-image: url(https://24.media.tumblr.com/6ddffd6a6036f61a1f2b1744bad77730/tumblr_mzgz9vJ1CK1st5lhmo1_1280.jpg) }
+.slideshow li:nth-child(1) span { background-image: url("../images/cactus.png") }
 .slideshow li:nth-child(2) span {
-    background-image: url(https://25.media.tumblr.com/aff8a8a33156a0eda844140764fd4359/tumblr_mzgz3tBAAU1st5lhmo1_1280.jpg);
+    background-image: url("../images/t2.png");
     -webkit-animation-delay: 6s;
     -moz-animation-delay: 6s;
     -o-animation-delay: 6s;
@@ -284,7 +284,7 @@ a{
     animation-delay: 6s;
 }
 .slideshow li:nth-child(3) span {
-    background-image: url('https://24.media.tumblr.com/f87b54bbce49e59debf7606662f54862/tumblr_n0hpxxDOJ91st5lhmo1_1280.jpg');
+    background-image: url("../images/face.png");
     -webkit-animation-delay: 12s;
     -moz-animation-delay: 12s;
     -o-animation-delay: 12s;
@@ -292,7 +292,7 @@ a{
     animation-delay: 12s;
 }
 .slideshow li:nth-child(4) span {
-    background-image: url(https://24.media.tumblr.com/0df0b55a4615378cf593241bad80a7da/tumblr_n0hpwpZrVc1st5lhmo1_1280.jpg);
+    background-image: url("../images/water.png");
     -webkit-animation-delay: 18s;
     -moz-animation-delay: 18s;
     -o-animation-delay: 18s;
@@ -300,7 +300,7 @@ a{
     animation-delay: 18s;
 }
 .slideshow li:nth-child(5) span {
-    background-image: url(https://24.media.tumblr.com/b94dbb2a392198d5cc39c19959598229/tumblr_n0hpthN8VH1st5lhmo1_1280.jpg);
+    background-image: url("../images/cactus.png");
     -webkit-animation-delay: 24s;
     -moz-animation-delay: 24s;
     -o-animation-delay: 24s;
@@ -308,7 +308,7 @@ a{
     animation-delay: 24s;
 }
 .slideshow li:nth-child(6) span {
-    background-image: url(https://31.media.tumblr.com/67d222ee577fc35faca83f0e08efc48e/tumblr_mzzqt7wyEU1st5lhmo1_1280.jpg);
+    background-image: url("../images/pattern.png");
     -webkit-animation-delay: 30s;
     -moz-animation-delay: 30s;
     -o-animation-delay: 30s;
