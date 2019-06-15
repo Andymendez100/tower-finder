@@ -74,11 +74,11 @@
                 <!-- Input fields -->
                 <div class="row">
                     <div class="col s6 xl5 input-field">
-                        <input placeholder="33.9745" id="latInput" type="number" class="validate" value="33.6634">
+                        <input placeholder="33.9745" id="latInput" type="number" class="validate" value="33.9745">
                         <label for="Latitude">Latitude: </label>
                     </div>
                     <div class="col s6 xl5 input-field">
-                        <input placeholder="-117.3374" id="longInput" type="number" class="validate" value="-116.3100">
+                        <input placeholder="-117.3374" id="longInput" type="number" class="validate" value="-117.3374">
                         <label for="Longitude">Longitude: </label>
                     </div>
                     <!-- Submit Button-->
@@ -114,21 +114,24 @@
             </div>
         </div>
 
+        <!-- Modal Alert-->
         <div id="modal1" class="modal">
             <div class="row" id="modal-row">
                 <div class="col" id="appDescription">
-                    <span class="card-title"><b>Invalid Ranges</span>
-                    <p class="center-align">Please enter valid ranges:
+                    <p id="modal-prompt">
+                        <br>Invalid Ranges
+                        <br>
+                        <br>Please enter valid ranges:
+                        <br>
                         <br>Latitude: -90 to 90
-                        <br>Longitude: -180 to 180</b>
-                    </p>
+                        <br>
+                        <br>Longitude: -180 to 180</p>
                 </div>
             </div>
             <div class="modal-footer">
-                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">OK</a>
+                <a href="#!" class="modal-action modal-close waves-effect blue darken-4 btn-small">OK</a>
             </div>
         </div>
-
     </main>
 
     <!-- Firebase Reference -->

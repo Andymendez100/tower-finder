@@ -117,11 +117,22 @@ footer{
   right: 10px;
   z-index: 99;
 }
-
 .tap-target{
   background-color: rgba(3, 40, 121, 0.945);
   color: white;
 }
 #modal1{
+  color: rgb(3, 40, 121);
   width: 500px;
+  border-radius: 4px;
+  top: 60%;
+}
+#modal-prompt {
+  margin: 0 30px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+#appDescription {
+  margin-left: 15%;
 }
