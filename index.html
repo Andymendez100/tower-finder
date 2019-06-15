@@ -20,7 +20,6 @@
 </head>
 
 <body>
-
     <!-- Preloader Spinner -->
     <div class="preloader-background hide">
         <div class="preloader-wrapper big active">
@@ -37,6 +36,33 @@
             </div>
         </div>
         <p class="blinking">Loading</p>
+    </div>
+
+    <!-- App Infomation -->
+    <div class="tapmenu">
+
+        <!-- Element Showed -->
+        <a id="menu" class="waves-effect waves-light btn-large btn-floating blue darken-4 tooltipped pulse"
+            data-position="left" data-tooltip="Instructions"><i class="material-icons">menu</i></a>
+
+        <!-- Tap Target Structure -->
+        <div class="tap-target" data-target="menu">
+            <div class="tap-target-content right-align">
+                <h5>Instructions</h5>
+                <p>This application takes the latitude and longitude that you have entered and finds all the cell
+                    towers within that city, then the application displays a map that shows your current
+                    location as well as creating a
+                    marker for all cell towers within the city.
+                    It will create a table as well as allowing you to click on the marker of any tower, and
+                    display the following information:
+                    <br>
+                    <b>The owner of the tower <br>
+                        The coordinates of the tower <br>
+                        City in which the tower is located <br>
+                        State in which the tower is located <br>
+                        Height of the tower</b></p>
+            </div>
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -88,31 +114,6 @@
             </div>
         </div>
 
-        <!-- App Infomation -->
-        <div class="row">
-            <div class="col">
-                <div id="appDescription">
-                    <div class="card">
-                        <div class="card-content">
-                            <span class="card-title center-align">Description</span>
-                            <p>This application takes the latitude and longitude that you have entered and finds all the cell
-                                towers within that city, then the application displays a map that shows your current location as well as creating a
-                                marker for all cell towers within the city.
-                                It will create a table as well as allowing you to click on the marker of any tower, and
-                                display the following information:
-                                <br>
-                                <b>The owner of the tower <br>
-                                The coordinates of the tower <br>
-                                City in which the tower is located <br>
-                                State in which the tower is located <br>
-                                Height of the tower</b>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
 
     </main>
 

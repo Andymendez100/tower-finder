@@ -225,15 +225,19 @@ $(function () {
   // Initializes map
   initMap({ lat: 33.9745, lng: -117.3374 });
 
-  // Prevent right click context menu on map
+  // Enable instructions funtionaility for materialize
+  $('.tap-target').tapTarget();
+  $('.tooltipped').tooltip();
+
+  // Prevent right click context menu
   window.onload = (function () {
     document.addEventListener("mouseup", function (evt) {
-      console.log(evt)
+      //console.log(evt)
       evt.preventDefault();
       evt.stopPropagation();
     });
     document.addEventListener("contextmenu", function (evt) {
-      console.log(evt);
+      //console.log(evt);
       evt.preventDefault();
       evt.stopPropagation();
     });
@@ -242,12 +246,73 @@ $(function () {
   // Get user submit and runs core logic
   google.maps.event.addListener(map, "rightclick", function (event) {
 
-    // Prevents default form actions
-    //event.preventDefault();
-
     // Get user coordinates
     var userLat = event.latLng.lat(); //parseFloat($("#latInput").val());
     var userLong = event.latLng.lng(); //parseFloat($("#longInput").val());
+    userCoord = { lat: userLat, lng: userLong };
+
+    // Error Checking
+    if (isValid(userLat, userLong)) {
+
+      // Preloader overlay
+      $(".preloader-background").removeClass("hide");
+
+      // Empty table
+      $("tbody").empty();
+
+      // Delete markers
+      deleteMarkers();
+
+      // Url for arcgis api call
+      var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
+
+      // Get the city in user inputed coordinates
+      $.when(getCity(queryURL)).then(function (response) {
+
+        // Sets user's city equal to the city containing coodinates
+        var userCity = response.address.City; //.toLowerCase();
+        console.log(userCity);
+
+        // Get towers that match user city from firebase database
+        $.when(getTowers(userCity)).then(function (data) {
+          // Towers equal to response
+          var towers = data.val();
+
+          // Adds a marker for the user
+          var userMarker = addMarker(userCoord);
+          userMarker.setIcon(iconUser);
+          markers.push(userMarker);
+
+          // Centers map on user
+          map.setCenter(userCoord);
+          map.setZoom(13);
+
+          // Make towers
+          makeTowers(towers);
+
+          // Show map and table
+          //$("#map").removeClass("hide");
+          $(".row").removeClass("hide");
+
+          // Remove preloader
+          $(".preloader-background").addClass("hide");
+
+          console.log("At end of response: Markers Length: ", markers.length + '\n\n');
+
+        });
+      });
+    }
+  });
+
+  // Get user submit and runs core logic
+  $("#submitButton").on("click", function (event) {
+
+    // Prevents default form actions
+    event.preventDefault();
+
+    // Get user coordinates
+    var userLat = parseFloat($("#latInput").val());
+    var userLong = parseFloat($("#longInput").val());
     userCoord = { lat: userLat, lng: userLong };
 
     // Error Checking
@@ -314,6 +379,13 @@ $(function () {
 
     // Generate infowindow
     makeInfowindow(towerID, infoContent);
+  });
+
+  // Open close instructions tap target
+  $("#menu").on("click", function () {
+    $('.tap-target').tapTarget('open');
+    // Remove pulse on click // Change to on mouseover?
+    $('#menu').removeClass("pulse");
   });
 });
 

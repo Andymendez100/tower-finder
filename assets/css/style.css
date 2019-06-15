@@ -105,3 +105,16 @@ table {
     table-layout: fixed;
   }
 }
+
+/* FeatureDiscovery  */
+.tapmenu{
+  top: 10px;
+  position: fixed;
+  right: 10px;
+  z-index: 99;
+}
+
+.tap-target{
+  background-color: rgba(3, 40, 121, 0.945);
+  color: white;
+}
