@@ -107,8 +107,15 @@ table {
 }
 
 /* Modal */
-#modal1{
+.modal{
   width: 40vw;
+  color: white;
+  background-color: rgba(3, 40, 121, 0.75);
+  border-radius: 4px;
+}
+.modal .modal-footer {
+  color: white;
+  background-color: rgba(3, 40, 121, 0.12);
 }
 
 /* Feature discovery  */

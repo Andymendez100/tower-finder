@@ -45,10 +45,10 @@ function initMap(location) {
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity(url) {
-  return $.ajax({
+  return Promise.resolve($.ajax({
     url: url,
-    method: "GET",
-  });
+    method: "GET"
+  }));
 }
 
 // Creates cell towers markers in maps in user coordinates
@@ -218,6 +218,14 @@ function inValidInput() {
   instance.open();
 }
 
+// Setup and display invalid input message
+function noCityModal() {
+  var elem = document.querySelector('#modal2');
+  var instance = M.Modal.init(elem);
+  instance.open();
+}
+
+
 
 // ========================
 // Main 
@@ -274,26 +282,36 @@ $(function () {
       // Get the city in user inputed coordinates
       $.when(getCity(queryURL)).then(function (response) {
 
-        // Sets user's city equal to the city containing coodinates
-        var userCity = response.address.City;
+        // Check if error is returned
+        var key = Object.keys(response)[0];
 
-        // Get towers that match user city from firebase database
-        $.when(getTowers(userCity)).then(function (data) {
-          // Towers equal to response
-          var towers = data.val();
+        // Checks if coordinates are in valid city
+        if (key == "address") {
+          // Sets user's city equal to the city containing coodinates
+          var userCity = response.address.City;
 
-          // Adds a marker for the user
-          var userMarker = addMarker(userCoord);
-          userMarker.setIcon(iconUser);
-          markers.push(userMarker);
+          // Get towers that match user city from firebase database
+          $.when(getTowers(userCity)).then(function (data) {
+            // Towers equal to response
+            var towers = data.val();
 
-          // Make towers
-          makeTowers(towers);
+            // Adds a marker for the user
+            var userMarker = addMarker(userCoord);
+            userMarker.setIcon(iconUser);
+            markers.push(userMarker);
 
-          // Remove preloader
-          $(".preloader-background").addClass("hide");
+            // Make towers
+            makeTowers(towers);
 
-        });
+          });
+        }
+        else {
+          noCityModal()
+        }
+
+        // Remove preloader
+        $(".preloader-background").addClass("hide");
+
       });
     }
   });
@@ -330,35 +348,46 @@ $(function () {
       // Get the city in user inputed coordinates
       $.when(getCity(queryURL)).then(function (response) {
 
-        // Sets user's city equal to the city containing coodinates
-        var userCity = response.address.City;
+        // Check if error is returned
+        var key = Object.keys(response)[0];
 
-        // Get towers that match user city from firebase database
-        $.when(getTowers(userCity)).then(function (data) {
-          // Towers equal to response
-          var towers = data.val();
+        // Checks if coordinates are in valid city
+        if (key == "address") {
+          // Sets user's city equal to the city containing coodinates
+          var userCity = response.address.City;
 
-          // Adds a marker for the user
-          var userMarker = addMarker(userCoord);
-          userMarker.setIcon(iconUser);
-          markers.push(userMarker);
+          // Get towers that match user city from firebase database
+          $.when(getTowers(userCity)).then(function (data) {
+            // Towers equal to response
+            var towers = data.val();
 
-          // Centers map on user
-          map.setCenter(userCoord);
-          map.setZoom(13);
+            // Adds a marker for the user
+            var userMarker = addMarker(userCoord);
+            userMarker.setIcon(iconUser);
+            markers.push(userMarker);
 
-          // Make towers
-          makeTowers(towers);
+            // Centers map on user
+            map.setCenter(userCoord);
+            map.setZoom(13);
 
-          // Show map and table
-          $("#map").removeClass("hide");
-          $(".row").removeClass("hide");
+            // Make towers
+            makeTowers(towers);
 
-          // Remove preloader
-          $(".preloader-background").addClass("hide");
+            // Show map and table
+            $("#map").removeClass("hide");
+            $(".row").removeClass("hide");
 
-        });
+          });
+        }
+        else {
+          noCityModal();
+        }
+
+        // Remove preloader
+        $(".preloader-background").addClass("hide");
+
       });
+
     }
   });
 
