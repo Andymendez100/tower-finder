@@ -29,12 +29,7 @@ form {
   background-color: white !important;
 }
 /* height: calc(100% - 50px); */
-footer {
-  margin-top: -20px;
-  background-color: rgba(38, 0, 255, 0.85);
-  font-weight: bolder;
-  color: rgba(238, 238, 238, 0.486);
-}
+
 label{
 	margin-top: 10px;
 }
@@ -171,8 +166,9 @@ table {
     table-layout: fixed;
   }
 }
-
-
+#backgroundText{
+  font-family: 'Anton', sans-serif;
+}
 
 
 
@@ -216,9 +212,6 @@ a{
 	color: #fff;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
     padding: 0px 0px 5px 0px;
-}
-.container > header h1 span{
-
 }
 .container > header h2, p.info{
 	font-size: 16px;
