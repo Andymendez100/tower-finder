@@ -474,6 +474,7 @@ $(function () {
   });
 
 });
+// Invalid Input for modal
 function inValidInput() {
   var elem = document.querySelector('.modal');
   var instance = M.Modal.init(elem);
