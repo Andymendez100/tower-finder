@@ -14,7 +14,6 @@ var markers = [];
 var infowindow;
 var activeInfoWindow;
 
-
 // ========================
 // Functions
 // ========================
@@ -224,8 +223,6 @@ function noCityModal() {
   var instance = M.Modal.init(elem);
   instance.open();
 }
-
-
 
 // ========================
 // Main 
@@ -449,7 +446,6 @@ $(function () {
         else {
           // Remove preloader
           $(".preloader-background").addClass("hide");
-
           noCityModal();
         }
 
@@ -476,7 +472,6 @@ $(function () {
     // Remove instruction button pulsing effect
     $('#menu').removeClass("pulse");
   });
-
 
 });
 function inValidInput() {
