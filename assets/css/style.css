@@ -1,8 +1,8 @@
 /* Height of main content 100 view height */
 .container {
-  height: 85vh;
-  margin-top: 5vh;
-  margin-bottom: 5vh;
+  height: 90vh;
+  margin-top: 2vh;
+  margin-bottom: 12vh;
 }
 
 /* Always set the map height explicitly to define the size of the div
@@ -21,22 +21,17 @@ body {
   color: black;
 }
 .row{
-  margin-bottom: 10x;
+  margin-bottom: 5x;
   
 }
 form {
-  padding-top: 10px;
-  background-color: white !important;
+	padding-top: 5px;
+	background-color: rgba(255,255,255, 0.8);
 }
 /* height: calc(100% - 50px); */
-footer {
-  margin-top: -20px;
-  background-color: rgba(38, 0, 255, 0.85);
-  font-weight: bolder;
-  color: rgba(238, 238, 238, 0.486);
-}
+
 label{
-	margin-top: 10px;
+	margin-top: 5px;
 }
 
 /* Change btn to fill row */
@@ -94,10 +89,10 @@ label{
 
 /* Table */
 table {
-  color: white;
-  background-color: rgba(0, 26, 175, 0.5);
-  margin-top: 2.5%;
-  border-style: groove;
+	color: white;
+	background-color: rgba(0, 26, 175, 0.5);
+	margin-top: 15px;
+	border-style: groove;
 }
 
 /* Scrollbar Customization */
@@ -112,7 +107,7 @@ table {
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(13, 71, 161); 
+  background: white;
   border-radius: 10px;
 }
 /* Handle on hover */
@@ -150,8 +145,8 @@ table {
 /* Changes wrapper for feature discovery on small screens */
 @media only screen and (max-width: 600px) {
   .tap-target, .tap-target-wrapper {
-    height: 95%;
-    border-radius: 25%;
+    height: 100%;
+    border-radius: 15%;
   }
 }
 
@@ -171,6 +166,7 @@ table {
     table-layout: fixed;
   }
 }
+<<<<<<< HEAD
 .card-content {
   padding: 10px;
   margin-top: 30px;
@@ -181,6 +177,11 @@ table {
   height: 50%;
 
 
+=======
+#backgroundText{
+  font-family: 'Anton', sans-serif;
+}
+>>>>>>> 551b21c30962cf12c88e9d959ae01831e070a25c
 
 
 
@@ -190,12 +191,13 @@ body{
 	background: #000;
 	font-weight: 400;
 	font-size: 15px;
-	overflow-y: scroll;
+	overflow-y: hidden;
 	overflow-x: hidden;
 }
 .ie7 body{
 	overflow:hidden;
 }
+
 a{
 	color: #333;
 	text-decoration: none;
@@ -225,9 +227,6 @@ a{
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
     padding: 0px 0px 5px 0px;
 }
-.container > header h1 span{
-
-}
 .container > header h2, p.info{
 	font-size: 16px;
 	font-style: italic;
@@ -246,7 +245,7 @@ a{
 }
 .slideshow:after {
     content: '';
-    background: transparent url(../images/pattern.png) repeat top left;
+    background: transparent url() repeat top left;
 }
 .slideshow li span {
     width: 100%;
@@ -289,9 +288,9 @@ a{
   line-height: 200px;
 	color: rgba(255,255,255, 0.8);
 }
-.slideshow li:nth-child(1) span { background-image: url(https://24.media.tumblr.com/6ddffd6a6036f61a1f2b1744bad77730/tumblr_mzgz9vJ1CK1st5lhmo1_1280.jpg) }
+.slideshow li:nth-child(1) span { background-image: url("../images/cactus.png") }
 .slideshow li:nth-child(2) span {
-    background-image: url(https://25.media.tumblr.com/aff8a8a33156a0eda844140764fd4359/tumblr_mzgz3tBAAU1st5lhmo1_1280.jpg);
+    background-image: url("../images/t2.png");
     -webkit-animation-delay: 6s;
     -moz-animation-delay: 6s;
     -o-animation-delay: 6s;
@@ -299,7 +298,7 @@ a{
     animation-delay: 6s;
 }
 .slideshow li:nth-child(3) span {
-    background-image: url('https://24.media.tumblr.com/f87b54bbce49e59debf7606662f54862/tumblr_n0hpxxDOJ91st5lhmo1_1280.jpg');
+    background-image: url("../images/face.png");
     -webkit-animation-delay: 12s;
     -moz-animation-delay: 12s;
     -o-animation-delay: 12s;
@@ -307,7 +306,7 @@ a{
     animation-delay: 12s;
 }
 .slideshow li:nth-child(4) span {
-    background-image: url(https://24.media.tumblr.com/0df0b55a4615378cf593241bad80a7da/tumblr_n0hpwpZrVc1st5lhmo1_1280.jpg);
+    background-image: url("../images/water.png");
     -webkit-animation-delay: 18s;
     -moz-animation-delay: 18s;
     -o-animation-delay: 18s;
@@ -315,7 +314,7 @@ a{
     animation-delay: 18s;
 }
 .slideshow li:nth-child(5) span {
-    background-image: url(https://24.media.tumblr.com/b94dbb2a392198d5cc39c19959598229/tumblr_n0hpthN8VH1st5lhmo1_1280.jpg);
+    background-image: url("../images/cactus.png");
     -webkit-animation-delay: 24s;
     -moz-animation-delay: 24s;
     -o-animation-delay: 24s;
@@ -323,7 +322,7 @@ a{
     animation-delay: 24s;
 }
 .slideshow li:nth-child(6) span {
-    background-image: url(https://31.media.tumblr.com/67d222ee577fc35faca83f0e08efc48e/tumblr_mzzqt7wyEU1st5lhmo1_1280.jpg);
+    background-image: url("../images/pattern.png");
     -webkit-animation-delay: 30s;
     -moz-animation-delay: 30s;
     -o-animation-delay: 30s;
@@ -576,4 +575,10 @@ a{
 }
 @media screen and (max-width: 600px) { 
 	.slideshow li div h3 { font-size: 50px }
+}
+
+@media only screen and (max-width: 900px) {
+	body {
+		overflow-y: scroll;
+	}
 }

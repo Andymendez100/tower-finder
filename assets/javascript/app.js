@@ -303,14 +303,17 @@ $(function () {
             // Make towers
             makeTowers(towers);
 
+            // Remove preloader
+            $(".preloader-background").addClass("hide");
+
           });
         }
         else {
-          noCityModal()
-        }
+          // Remove preloader
+          $(".preloader-background").addClass("hide");
 
-        // Remove preloader
-        $(".preloader-background").addClass("hide");
+          noCityModal();
+        }
 
       });
     }
@@ -365,7 +368,6 @@ $(function () {
           makeTowers(towers);
 
           // Show map and table
-          //$("#map").removeClass("hide");
           $(".row").removeClass("hide");
 
           // Remove preloader
@@ -439,14 +441,17 @@ $(function () {
             $("#map").removeClass("hide");
             $(".row").removeClass("hide");
 
+            // Remove preloader
+            $(".preloader-background").addClass("hide");
+
           });
         }
         else {
+          // Remove preloader
+          $(".preloader-background").addClass("hide");
+
           noCityModal();
         }
-
-        // Remove preloader
-        $(".preloader-background").addClass("hide");
 
       });
 
@@ -474,8 +479,8 @@ $(function () {
 
 
 });
-function inValidInput(){
-var elem= document.querySelector('.modal');
-var instance = M.Modal.init(elem);
-instance.open();
+function inValidInput() {
+  var elem = document.querySelector('.modal');
+  var instance = M.Modal.init(elem);
+  instance.open();
 }
