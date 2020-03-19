@@ -166,7 +166,6 @@ table {
     table-layout: fixed;
   }
 }
-<<<<<<< HEAD
 .card-content {
   padding: 10px;
   margin-top: 30px;
@@ -176,12 +175,10 @@ table {
   width: 50%;
   height: 50%;
 
-
-=======
+}
 #backgroundText{
   font-family: 'Anton', sans-serif;
 }
->>>>>>> 551b21c30962cf12c88e9d959ae01831e070a25c
 
 
 
