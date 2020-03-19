@@ -39,16 +39,16 @@ function initMap(location) {
   map = new google.maps.Map(document.getElementById('map'), {
     center: location,
     mapTypeId: 'terrain',
-    zoom: 13
+    zoom: 10
   });
 }
 
 // Ajax call to ArcGIS to get reverse geocode of coordinates
 function getCity(url) {
-  return $.ajax({
+  return Promise.resolve($.ajax({
     url: url,
-    method: "GET",
-  });
+    method: "GET"
+  }));
 }
 
 // Creates cell towers markers in maps in user coordinates
@@ -193,14 +193,12 @@ function isValid(lat, long) {
 
   // Checks latitude range
   if (lat < -90 || lat > 90) {
-    // maybe add a modal here?
     inValidInput();
     return false;
   }
 
   // Checks longitude range
   else if (long < -180 || long > 180) {
-    // maybe add a modal here?
     inValidInput();
     return false;
   }
@@ -208,11 +206,25 @@ function isValid(lat, long) {
   // Checks if input is empty
   else if (isNaN(lat) || isNaN(long)) {
     inValidInput();
-    // maybe add a modal here
     return false;
   }
   return true;
 }
+
+// Setup and display invalid input message
+function inValidInput() {
+  var elem = document.querySelector('.modal');
+  var instance = M.Modal.init(elem);
+  instance.open();
+}
+
+// Setup and display invalid input message
+function noCityModal() {
+  var elem = document.querySelector('#modal2');
+  var instance = M.Modal.init(elem);
+  instance.open();
+}
+
 
 
 // ========================
@@ -222,31 +234,29 @@ function isValid(lat, long) {
 // Shorthand document ready
 $(function () {
 
+  // Enable trigger funtionaility for materialize components
+  $('.tap-target').tapTarget();
+  $('.tooltipped').tooltip();
+
   // Initialiaze firebase
   initFirebase();
 
   // Initializes map
   initMap({ lat: 33.9745, lng: -117.3374 });
 
-  // Enable instructions funtionaility for materialize
-  $('.tap-target').tapTarget();
-  $('.tooltipped').tooltip();
-
   // Prevent right click context menu
   window.onload = (function () {
     document.addEventListener("mouseup", function (evt) {
-      //console.log(evt)
       evt.preventDefault();
       evt.stopPropagation();
     });
     document.addEventListener("contextmenu", function (evt) {
-      //console.log(evt);
       evt.preventDefault();
       evt.stopPropagation();
     });
   })();
 
-  // Get user submit and runs core logic
+  // Get user submit on google maps and runs core logic
   google.maps.event.addListener(map, "rightclick", function (event) {
 
     // Get user coordinates
@@ -263,46 +273,45 @@ $(function () {
       // Empty table
       $("tbody").empty();
 
-      // Delete markers
+      // Delete previous markers
       deleteMarkers();
 
-      // Url for arcgis api call
+      // Url for arcGIS api call
       var queryURL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=json&langCode=EN&location=" + userLong + "," + userLat;
 
       // Get the city in user inputed coordinates
       $.when(getCity(queryURL)).then(function (response) {
 
-        // Sets user's city equal to the city containing coodinates
-        var userCity = response.address.City; //.toLowerCase();
-        console.log(userCity);
+        // Check if error is returned
+        var key = Object.keys(response)[0];
 
-        // Get towers that match user city from firebase database
-        $.when(getTowers(userCity)).then(function (data) {
-          // Towers equal to response
-          var towers = data.val();
+        // Checks if coordinates are in valid city
+        if (key == "address") {
+          // Sets user's city equal to the city containing coodinates
+          var userCity = response.address.City;
 
-          // Adds a marker for the user
-          var userMarker = addMarker(userCoord);
-          userMarker.setIcon(iconUser);
-          markers.push(userMarker);
+          // Get towers that match user city from firebase database
+          $.when(getTowers(userCity)).then(function (data) {
+            // Towers equal to response
+            var towers = data.val();
 
-          // Centers map on user
-          map.setCenter(userCoord);
-          map.setZoom(13);
+            // Adds a marker for the user
+            var userMarker = addMarker(userCoord);
+            userMarker.setIcon(iconUser);
+            markers.push(userMarker);
 
-          // Make towers
-          makeTowers(towers);
+            // Make towers
+            makeTowers(towers);
 
-          // Show map and table
-          //$("#map").removeClass("hide");
-          $(".row").removeClass("hide");
+          });
+        }
+        else {
+          noCityModal()
+        }
 
-          // Remove preloader
-          $(".preloader-background").addClass("hide");
+        // Remove preloader
+        $(".preloader-background").addClass("hide");
 
-          console.log("At end of response: Markers Length: ", markers.length + '\n\n');
-
-        });
       });
     }
   });
@@ -386,6 +395,9 @@ $(function () {
       // Preloader overlay
       $(".preloader-background").removeClass("hide");
 
+      // Remove instruction button pulsing effect
+      $('#menu').removeClass("pulse");
+
       // Empty table
       $("tbody").empty();
 
@@ -398,38 +410,46 @@ $(function () {
       // Get the city in user inputed coordinates
       $.when(getCity(queryURL)).then(function (response) {
 
-        // Sets user's city equal to the city containing coodinates
-        var userCity = response.address.City; //.toLowerCase();
-        console.log(userCity);
+        // Check if error is returned
+        var key = Object.keys(response)[0];
 
-        // Get towers that match user city from firebase database
-        $.when(getTowers(userCity)).then(function (data) {
-          // Towers equal to response
-          var towers = data.val();
+        // Checks if coordinates are in valid city
+        if (key == "address") {
+          // Sets user's city equal to the city containing coodinates
+          var userCity = response.address.City;
 
-          // Adds a marker for the user
-          var userMarker = addMarker(userCoord);
-          userMarker.setIcon(iconUser);
-          markers.push(userMarker);
+          // Get towers that match user city from firebase database
+          $.when(getTowers(userCity)).then(function (data) {
+            // Towers equal to response
+            var towers = data.val();
 
-          // Centers map on user
-          map.setCenter(userCoord);
-          map.setZoom(13);
+            // Adds a marker for the user
+            var userMarker = addMarker(userCoord);
+            userMarker.setIcon(iconUser);
+            markers.push(userMarker);
 
-          // Make towers
-          makeTowers(towers);
+            // Centers map on user
+            map.setCenter(userCoord);
+            map.setZoom(13);
 
-          // Show map and table
-          //$("#map").removeClass("hide");
-          $(".row").removeClass("hide");
+            // Make towers
+            makeTowers(towers);
 
-          // Remove preloader
-          $(".preloader-background").addClass("hide");
+            // Show map and table
+            $("#map").removeClass("hide");
+            $(".row").removeClass("hide");
 
-          console.log("At end of response: Markers Length: ", markers.length + '\n\n');
+          });
+        }
+        else {
+          noCityModal();
+        }
 
-        });
+        // Remove preloader
+        $(".preloader-background").addClass("hide");
+
       });
+
     }
   });
 
@@ -437,7 +457,6 @@ $(function () {
   $("tbody").on("click", "tr", function () {
     // Get tower position in array
     var towerID = $(this).attr("data-id");
-    console.log("TowerID: ", $(this).attr("data-id"));
 
     // Creates and returns infowindow content
     var infoContent = makeInfoContent(towerID);
@@ -446,12 +465,14 @@ $(function () {
     makeInfowindow(towerID, infoContent);
   });
 
-  // Open close instructions tap target
+  // Open close instructions tap target from feature discovery when clicked
   $("#menu").on("click", function () {
     $('.tap-target').tapTarget('open');
-    // Remove pulse on click // Change to on mouseover?
+    // Remove instruction button pulsing effect
     $('#menu').removeClass("pulse");
   });
+
+
 });
 function inValidInput(){
 var elem= document.querySelector('.modal');
